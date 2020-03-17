@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BluePail</string>
+    <string name="plant_db_table">plant_table</string>
 </resources>

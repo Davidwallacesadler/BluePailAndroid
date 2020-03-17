@@ -1,7 +1,8 @@
-package com.davidsadler.bluepail
+package com.davidsadler.bluepail.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.davidsadler.bluepail.R
 
 class MainActivity : AppCompatActivity() {
 
