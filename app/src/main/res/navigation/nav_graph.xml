@@ -36,4 +36,9 @@
         android:name="com.davidsadler.bluepail.fragments.PlantReminderSetupDialog"
         android:label="fragment_plant_reminder_setup_dialog"
         tools:layout="@layout/fragment_plant_reminder_setup_dialog" />
+    <fragment
+        android:id="@+id/appSettings"
+        android:name="com.davidsadler.bluepail.fragments.AppSettings"
+        android:label="fragment_app_settings"
+        tools:layout="@layout/fragment_app_settings" />
 </navigation>
