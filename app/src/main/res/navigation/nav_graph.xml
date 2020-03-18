@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/plantList"
         android:name="com.davidsadler.bluepail.fragments.PlantList"
-        android:label="fragment_plant_list"
-        tools:layout="@layout/fragment_plant_list" >
+        android:label="My Plants"
+        tools:layout="@layout/fragment_plant_list">
         <action
             android:id="@+id/action_plantList_to_plantListDialog"
             app:destination="@id/plantListDialog" />
@@ -17,28 +17,35 @@
             android:id="@+id/action_plantList_to_plantDetail"
             app:destination="@id/plantDetail" />
     </fragment>
-    <fragment
+
+    <dialog
         android:id="@+id/plantListDialog"
         android:name="com.davidsadler.bluepail.fragments.PlantListDialog"
-        android:label="fragment_plant_list_dialog"
         tools:layout="@layout/fragment_plant_list_dialog" />
+
     <fragment
         android:id="@+id/plantDetail"
         android:name="com.davidsadler.bluepail.fragments.PlantDetail"
-        android:label="fragment_plant_detail"
-        tools:layout="@layout/fragment_plant_detail" >
+        android:label="Detail"
+        tools:layout="@layout/fragment_plant_detail">
         <action
             android:id="@+id/action_plantDetail_to_plantReminderSetupDialog"
             app:destination="@id/plantReminderSetupDialog" />
     </fragment>
-    <fragment
+
+    <dialog
         android:id="@+id/plantReminderSetupDialog"
         android:name="com.davidsadler.bluepail.fragments.PlantReminderSetupDialog"
-        android:label="fragment_plant_reminder_setup_dialog"
         tools:layout="@layout/fragment_plant_reminder_setup_dialog" />
+
     <fragment
         android:id="@+id/appSettings"
         android:name="com.davidsadler.bluepail.fragments.AppSettings"
-        android:label="fragment_app_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_app_settings" />
+    <dialog
+        android:id="@+id/plantListFilterDialog"
+        android:name="com.davidsadler.bluepail.fragments.PlantListFilterDialog"
+        android:label="fragment_plant_list_filter"
+        tools:layout="@layout/fragment_plant_list_filter" />
 </navigation>

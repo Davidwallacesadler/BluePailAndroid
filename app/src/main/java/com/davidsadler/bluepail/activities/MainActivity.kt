@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        println("item selected: $item")
         val navController = Navigation.findNavController(this,R.id.navHostFragment)
         val navigated = NavigationUI.onNavDestinationSelected(item,navController)
         return navigated || super.onOptionsItemSelected(item)
