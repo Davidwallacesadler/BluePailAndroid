@@ -1,9 +1,21 @@
 <resources>
     <string name="app_name">BluePail</string>
     <string name="plant_db_table">plant_table</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_item_filter">Filter</string>
     <string name="menu_item_settings">appSettings</string>
+    <string name="menu_item_save">Save</string>
+    <string name="menu_item_cancel">Cancel</string>
+    <string name="text_view_plant_title_header">Title</string>
+    <string name="text_view_plant_color_header">Color</string>
+    <string name="text_view_plant_reminder_header">Reminders</string>
+    <string name="text_view_plant_photo_header">Photo</string>
+    <string name="edit_text_plant_title_hint">Enter a plant name</string>
+    <string name="image_button_watering_setup">Setup your plants watering schedule</string>
+    <string name="image_button_fertilizing_setup">Setup you plants fertilizing schedule</string>
+    <string name="text_view_plant_watering_reminder_header">Watering Reminder</string>
+    <string name="text_view_plant_fertilizing_reminder_header">Fertilizer Reminder (optional)</string>
+    <string name="text_view_next_reminder_date_header">Next:</string>
+    <string name="text_view_reminder_interval_header">Interval:</string>
+    <string name="image_button_plant_photo">Add a photo of your plant</string>
 </resources>

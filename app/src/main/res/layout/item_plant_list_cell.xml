@@ -28,6 +28,7 @@
                 android:id="@+id/textView_plant_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:gravity="center"
                 android:textColor="#131313"
                 android:visibility="visible"
