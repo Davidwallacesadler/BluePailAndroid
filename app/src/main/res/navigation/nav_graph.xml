@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/plantDetail"
         android:name="com.davidsadler.bluepail.fragments.PlantDetail"
-        android:label="Detail"
+        android:label="Create a Plant"
         tools:layout="@layout/fragment_plant_detail">
         <action
             android:id="@+id/action_plantDetail_to_plantReminderSetupDialog"

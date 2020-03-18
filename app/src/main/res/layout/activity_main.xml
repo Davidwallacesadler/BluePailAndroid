@@ -40,6 +40,7 @@
         android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="invisible"
         app:fabCustomSize="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
