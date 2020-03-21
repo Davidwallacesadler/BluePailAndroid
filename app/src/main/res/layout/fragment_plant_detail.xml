@@ -49,10 +49,11 @@
                     android:id="@+id/editText_plant_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints="@string/edit_text_plant_title_hint"
                     android:ems="10"
                     android:hint="@string/edit_text_plant_title_hint"
-                    android:inputType="textEmailAddress"
-                    android:autofillHints="@string/edit_text_plant_title_hint"/>
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapWords"/>
 
                 <Space
                     android:layout_width="match_parent"
@@ -78,6 +79,7 @@
                     android:id="@+id/recyclerView_plant_colors"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
+                    android:focusable="true"
                     android:layoutDirection="inherit">
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -140,7 +142,7 @@
                                 android:id="@+id/textView_next_watering_reminder"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Tomorrow at (12:00 AM)" />
+                                android:text="Select the calendar icon" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -160,15 +162,16 @@
                             <TextView
                                 android:id="@+id/textView_watering_interval"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="1 day" />
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
 
                         <TimePicker
                             android:id="@+id/timePicker_watering_time"
-                            android:layout_width="match_parent"
+                            android:layout_width="378dp"
                             android:layout_height="wrap_content"
+                            android:focusable="true"
                             android:timePickerMode="spinner"
+                            android:visibility="invisible"
                             tools:targetApi="LOLLIPOP" />
 
                     </LinearLayout>
@@ -179,6 +182,7 @@
                         android:layout_height="30dp"
                         android:background="#F9F9F9"
                         android:contentDescription="@string/image_button_watering_setup"
+                        android:focusable="true"
                         android:scaleType="fitCenter"
                         android:src="@drawable/button_calendar_setup" />
                 </LinearLayout>
@@ -241,7 +245,6 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/textView11"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/text_view_reminder_interval_header" />
@@ -251,18 +254,19 @@
                                 android:layout_height="match_parent" />
 
                             <TextView
-                                android:id="@+id/textView10"
+                                android:id="@+id/textView_fertilizing_interval"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="X days" />
+                                android:layout_weight="1" />
                         </LinearLayout>
 
                         <TimePicker
                             android:id="@+id/timePicker_setup_fertilizing"
-                            android:layout_width="match_parent"
+                            android:layout_width="381dp"
                             android:layout_height="wrap_content"
+                            android:focusable="true"
                             android:timePickerMode="spinner"
+                            android:visibility="invisible"
                             tools:targetApi="LOLLIPOP" />
 
                     </LinearLayout>
@@ -274,6 +278,7 @@
                         android:layout_weight="0"
                         android:background="#F9F9F9"
                         android:contentDescription="@string/image_button_fertilizing_setup"
+                        android:focusable="false"
                         android:scaleType="fitCenter"
                         android:src="@drawable/button_calendar_setup" />
                 </LinearLayout>
@@ -301,7 +306,10 @@
                     android:id="@+id/imageButton_plant_photo"
                     android:layout_width="match_parent"
                     android:layout_height="185dp"
-                    android:contentDescription="@string/image_button_plant_photo" />
+                    android:background="#FFFFFF"
+                    android:contentDescription="@string/image_button_plant_photo"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/image_button_photo" />
 
             </LinearLayout>
         </ScrollView>

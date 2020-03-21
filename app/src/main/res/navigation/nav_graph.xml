@@ -27,16 +27,17 @@
         android:id="@+id/plantDetail"
         android:name="com.davidsadler.bluepail.fragments.PlantDetail"
         android:label="Create a Plant"
-        tools:layout="@layout/fragment_plant_detail">
-        <action
-            android:id="@+id/action_plantDetail_to_plantReminderSetupDialog"
-            app:destination="@id/plantReminderSetupDialog" />
-    </fragment>
+        tools:layout="@layout/fragment_plant_detail"/>
 
     <dialog
         android:id="@+id/plantReminderSetupDialog"
         android:name="com.davidsadler.bluepail.fragments.PlantReminderSetupDialog"
-        tools:layout="@layout/fragment_plant_reminder_setup_dialog" />
+        tools:layout="@layout/fragment_plant_reminder_setup_dialog" >
+        <argument
+            android:name="isFertilizerSetup"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </dialog>
 
     <fragment
         android:id="@+id/appSettings"
