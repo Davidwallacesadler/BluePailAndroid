@@ -1,6 +1,5 @@
 package com.davidsadler.bluepail.activities
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -20,16 +19,46 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        initializeNavController()
+        setupActionBar(navController)
+        setupFab()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupOnNavigationDestinationChangedListener()
+    }
+
+    private fun setupActionBar(navController: NavController) {
+        NavigationUI.setupActionBarWithNavController(this,navController)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navigated = NavigationUI.onNavDestinationSelected(item,navController)
+        return navigated || super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(Navigation.findNavController(this,R.id.navHostFragment),null)
+    }
+
+    private fun initializeNavController() {
         val navController = Navigation.findNavController(this,R.id.navHostFragment)
         this.navController = navController
-        setupActionBar(navController)
+    }
+
+    private fun setupFab() {
         fab_create_plant.setOnClickListener {
             navController.navigate(R.id.plantDetail)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setupOnNavigationDestinationChangedListener() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.plantList -> {
@@ -76,23 +105,5 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun setupActionBar(navController: NavController) {
-        NavigationUI.setupActionBarWithNavController(this,navController)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar,menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navigated = NavigationUI.onNavDestinationSelected(item,navController)
-        return navigated || super.onOptionsItemSelected(item)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(Navigation.findNavController(this,R.id.navHostFragment),null)
     }
 }

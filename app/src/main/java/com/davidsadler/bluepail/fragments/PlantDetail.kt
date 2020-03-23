@@ -2,14 +2,11 @@ package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
 import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
-import android.os.SystemClock
 import android.provider.MediaStore
 import android.view.*
 import android.widget.TimePicker
@@ -17,13 +14,16 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.ColorsAdapter
 import com.davidsadler.bluepail.adapters.OnColorSelectedListener
+import com.davidsadler.bluepail.model.Plant
+import com.davidsadler.bluepail.model.PlantRepository
+import com.davidsadler.bluepail.model.PlantViewModel
 import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_detail.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -59,7 +59,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun colorSelected(colorId: Int) {
         selectedColor = colorId
-        println("Selected Color: $selectedColor")
     }
 
     private var name = ""
@@ -69,7 +68,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private var wateringInterval: Int? = null
     private var fertilizingDate: Date? = null
     private var fertilizingInterval: Int? = null
-    private var photoUri = ""
+    private var photoUri: String? = null
     private val REQUEST_IMAGE_CAPTURE = 1
     lateinit var alarmManager: AlarmManager
 
@@ -82,19 +81,34 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.activity?.let {
-            alarmManager = it.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        }
+        setupAlarmManager()
         inflateBottomToolbar()
+        setupToolbarItems()
         setupColorRecyclerView()
         setupReminderClickListeners()
         setupTimePickers()
         setupPhotoImageButton()
-        checkIfNotificationsSchedule()
+    }
+
+    private fun setupAlarmManager() {
+        this.activity?.let {
+            alarmManager = it.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        }
     }
 
     private fun inflateBottomToolbar() {
         toolbar_cancel_save.inflateMenu(R.menu.detail_toolbar)
+    }
+
+    private fun setupToolbarItems() {
+        toolbar_cancel_save.menu.findItem(R.id.menu_item_cancel).setOnMenuItemClickListener {
+            navigateToPlantList()
+            true
+        }
+        toolbar_cancel_save.menu.findItem(R.id.menu_item_save).setOnMenuItemClickListener {
+            savePlant()
+            true
+        }
     }
 
     private fun setupColorRecyclerView() {
@@ -167,8 +181,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 }
                 photoFile?.also {
                     val photoURI = FileProvider.getUriForFile(this.context!!, "com.example.android.fileprovider",it)
-//                    println("Getting photo URI -- Passing it into the take picture intent")
-//                    println("Photo URI : $photoURI")
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
@@ -187,32 +199,41 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     private fun getAndSetPhoto() {
         val bitMappedImage = BitmapFactory.decodeFile(photoUri)
-        val originalWidth = bitMappedImage.width
-        val originalHeight = bitMappedImage.height
-        println("Passed in photo width: $originalWidth, height: $originalHeight")
-        val resizedBitmap = bitMappedImage.resizeBitmap(250,250)
+        val resizedBitmap = bitMappedImage.resize(250,250)
         imageButton_plant_photo.setImageBitmap(resizedBitmap)
     }
 
-    private fun scheduleNotification(isWateringNotification: Boolean, fireDate: Date) {
-        this.context?.let {
-            val intent = Intent(it, NotificationReceiver::class.java)
-            intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, editText_plant_name.text.toString())
-            intent.putExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL, isWateringNotification)
-            val pendingIntent = PendingIntent.getBroadcast(it,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-            alarmManager.set(AlarmManager.RTC_WAKEUP,fireDate.timeInMillis(),pendingIntent)
+    private fun navigateToPlantList() {
+        this.view?.let {
+            Navigation.findNavController(it).navigate(R.id.plantList)
         }
     }
 
-    private fun checkIfNotificationsSchedule() {
-        this.context?.let {context ->
-            val intent = Intent(context, NotificationReceiver::class.java)
-            intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, "HELLO WORLD")
-            // Create a pending intent:
-            val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
-            // Set the alarm manager:
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,pendingIntent)
-            println("setting alarm")
+    private fun savePlant() {
+        println("Save plant pressed")
+        if (allRequiredParametersAreSet()) {
+            println("Saving plant")
+            val newPlant = Plant(0,editText_plant_name.text.toString(),
+                selectedColor,
+                wateringDate!!,
+                wateringInterval!!,
+                fertilizingDate,
+                fertilizingInterval,
+                photoUri)
         }
+    }
+
+    private fun allRequiredParametersAreSet() : Boolean {
+        this.context?.let {context ->
+            if (editText_plant_name.text.toString().isEmpty()) {
+                Toast.makeText(context,"Please enter a plant name",Toast.LENGTH_SHORT).show()
+                return false
+            }
+            if (wateringDate == null && wateringInterval == null) {
+                Toast.makeText(context,"Please enter a watering schedule",Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
+        return true
     }
 }
