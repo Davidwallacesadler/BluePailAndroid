@@ -1,11 +1,15 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.view.*
 import android.widget.TimePicker
@@ -17,8 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.ColorsAdapter
 import com.davidsadler.bluepail.adapters.OnColorSelectedListener
-import com.davidsadler.bluepail.util.getDateAtDesiredTime
-import com.davidsadler.bluepail.util.resizeBitmap
+import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_detail.*
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -68,6 +71,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private var fertilizingInterval: Int? = null
     private var photoUri = ""
     private val REQUEST_IMAGE_CAPTURE = 1
+    lateinit var alarmManager: AlarmManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,11 +82,15 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.activity?.let {
+            alarmManager = it.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        }
         inflateBottomToolbar()
         setupColorRecyclerView()
         setupReminderClickListeners()
         setupTimePickers()
         setupPhotoImageButton()
+        checkIfNotificationsSchedule()
     }
 
     private fun inflateBottomToolbar() {
@@ -184,5 +192,27 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         println("Passed in photo width: $originalWidth, height: $originalHeight")
         val resizedBitmap = bitMappedImage.resizeBitmap(250,250)
         imageButton_plant_photo.setImageBitmap(resizedBitmap)
+    }
+
+    private fun scheduleNotification(isWateringNotification: Boolean, fireDate: Date) {
+        this.context?.let {
+            val intent = Intent(it, NotificationReceiver::class.java)
+            intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, editText_plant_name.text.toString())
+            intent.putExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL, isWateringNotification)
+            val pendingIntent = PendingIntent.getBroadcast(it,0,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+            alarmManager.set(AlarmManager.RTC_WAKEUP,fireDate.timeInMillis(),pendingIntent)
+        }
+    }
+
+    private fun checkIfNotificationsSchedule() {
+        this.context?.let {context ->
+            val intent = Intent(context, NotificationReceiver::class.java)
+            intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, "HELLO WORLD")
+            // Create a pending intent:
+            val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
+            // Set the alarm manager:
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,pendingIntent)
+            println("setting alarm")
+        }
     }
 }

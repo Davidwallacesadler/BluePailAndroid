@@ -73,3 +73,9 @@ fun Date.amountOfDaysToOtherDate(otherDate: Date) : Int {
     val otherDayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
     return otherDayOfYear - currentDayOfYear
 }
+
+fun Date.timeInMillis() : Long {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    return calendar.timeInMillis
+}
