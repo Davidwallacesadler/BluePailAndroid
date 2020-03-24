@@ -8,6 +8,7 @@ import java.util.*
 
 class NotificationManager {
     companion object {
+
         // Schedule:
         fun scheduleNotification(plantName: String,
                                  isWateringNotification: Boolean,
@@ -22,7 +23,8 @@ class NotificationManager {
         }
 
         // Cancel:
-        fun cancelNotification(pendingIntent: PendingIntent, alarmManager: AlarmManager) {
+        fun cancelNotification(pendingIntent: PendingIntent,
+                               alarmManager: AlarmManager) {
             alarmManager.cancel(pendingIntent)
         }
     }

@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
@@ -42,10 +43,12 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 when (timePickerTag) {
                     0 -> {
                         val dateAtCorrectTime = wateringDate!!.getDateAtDesiredTime(hourOfDay,minute)
+                        wateringDate = dateAtCorrectTime
                         textView_next_watering_reminder.text = dateAtCorrectTime.toString()
                     }
                     1 -> {
                         val dateAtCorrectTime = fertilizingDate!!.getDateAtDesiredTime(hourOfDay,minute)
+                        fertilizingDate = dateAtCorrectTime
                         textView_next_fertilizing.text = dateAtCorrectTime.toString()
                     }
                 }
@@ -68,14 +71,20 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private var wateringInterval: Int? = null
     private var fertilizingDate: Date? = null
     private var fertilizingInterval: Int? = null
+    private var plantId = 0
     private var photoUri: String? = null
     private val REQUEST_IMAGE_CAPTURE = 1
+
     lateinit var alarmManager: AlarmManager
+    private lateinit var viewModel: PlantViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.activity?.let {
+            viewModel = ViewModelProvider(it).get(PlantViewModel::class.java)
+        }
         return inflater.inflate(R.layout.fragment_plant_detail, container, false)
     }
 
@@ -144,7 +153,10 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun setupReminderUi(nextDate: Date, interval: Int, isForFertilizing: Boolean) {
-        val intervalText = "$interval Days"
+        val intervalText = when (interval) {
+            1 -> "$interval Day"
+            else -> "$interval Days"
+        }
         if (isForFertilizing) {
             fertilizingDate = nextDate
             fertilizingInterval = interval
@@ -212,14 +224,35 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private fun savePlant() {
         println("Save plant pressed")
         if (allRequiredParametersAreSet()) {
-            println("Saving plant")
-            val newPlant = Plant(0,editText_plant_name.text.toString(),
+            val plant = Plant(plantId,editText_plant_name.text.toString(),
                 selectedColor,
                 wateringDate!!,
                 wateringInterval!!,
                 fertilizingDate,
                 fertilizingInterval,
                 photoUri)
+            if (plantId == 0) {
+                // TODO: Create alarm notifications
+                NotificationManager.scheduleNotification(plant.name,
+                    true,
+                    plant.wateringDate,
+                    this.context!!,
+                    alarmManager)
+                if (fertilizingDate != null) {
+                    fertilizingDate?.let {
+                        NotificationManager.scheduleNotification(plant.name,
+                            false,
+                            it,
+                            this.context!!,
+                            alarmManager)
+                    }
+                }
+                viewModel.insert(plant)
+            } else {
+                viewModel.update(plant)
+                // TODO: Cancel alarm notifications if there are any... somehow
+            }
+            navigateToPlantList()
         }
     }
 

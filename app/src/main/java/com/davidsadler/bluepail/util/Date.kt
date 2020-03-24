@@ -4,35 +4,33 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.absoluteValue
 
-fun Date.getDaysAwayFromNowWithTime(inputDate: Date = this, includesTime: Boolean) : String {
+fun Date.getDaysAwayFromNow(includesTime: Boolean) : String {
     val calendar = Calendar.getInstance()
     val todaysDayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
-    calendar.time = inputDate
+    calendar.time = this
     val inputDayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
     val daysBetweenDate = inputDayOfYear.minus(todaysDayOfYear)
     var returnString: String
     returnString = if (daysBetweenDate >= 0) {
         when (daysBetweenDate) {
-            0 -> "Today "
-            1 -> "Tomorrow "
-            else -> "$daysBetweenDate Days "
+            0 -> "Today"
+            1 -> "Tomorrow"
+            else -> "$daysBetweenDate Days"
         }
     } else {
         val absoluteValueDays = daysBetweenDate.toDouble().absoluteValue.toInt()
         when (daysBetweenDate) {
-            -1 -> "Yesterday "
-            else -> "$absoluteValueDays Days ago "
+            -1 -> "Yesterday"
+            else -> "$absoluteValueDays Days ago"
         }
     }
     if (includesTime) {
         val hourAndMinuteDateFormat = "hh:mm a"
         val simpleFormatter = SimpleDateFormat(hourAndMinuteDateFormat)
-        val timeString = simpleFormatter.format(inputDate)
-        returnString = returnString.plus("($timeString)")
-        return returnString
-    } else {
-        return returnString
+        val timeString = simpleFormatter.format(this)
+        returnString = returnString.plus(" ($timeString)")
     }
+    return returnString
 }
 
 fun Date.getDateAmountOfDaysAway(daysAway: Int, inputDate: Date = this): Date {
