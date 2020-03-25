@@ -11,4 +11,6 @@
     <color name="colorGroupBlue">#1E88E5</color>
     <color name="colorGroupPurple">#5E35B1</color>
     <color name="colorGroupMagenta">#D81B51</color>
+    <color name="colorDelete">#FF0000</color>
+    <color name="colorEdit">#7F8186</color>
 </resources>

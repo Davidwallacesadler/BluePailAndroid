@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF"
     tools:context=".fragments.PlantListDialog">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:clipChildren="true"
+        app:cardBackgroundColor="#00FFFFFF"
+        app:cardCornerRadius="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_plant_title_list_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/text_view_plant_title_header" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#FFFFFF" />
+
+            <Button
+                android:id="@+id/button_water_plant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="@string/button_plant_water"
+                android:textColor="#FFFFFF" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#FFFFFF" />
+
+            <Button
+                android:id="@+id/button_fertilize_plant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fertilizerGreen"
+                android:text="@string/button_plant_fertilize"
+                android:textColor="#FFFFFF" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#FFFFFF" />
+
+            <Button
+                android:id="@+id/button_edit_plant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorEdit"
+                android:text="@string/button_plant_edit"
+                android:textColor="#FFFFFF" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#FFFFFF" />
+
+            <Button
+                android:id="@+id/button_delete_plant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorDelete"
+                android:text="@string/button_plant_delete"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

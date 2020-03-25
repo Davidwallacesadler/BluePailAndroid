@@ -18,4 +18,8 @@
     <string name="text_view_next_reminder_date_header">Next:</string>
     <string name="text_view_reminder_interval_header">Interval:</string>
     <string name="image_button_plant_photo">Add a photo of your plant</string>
+    <string name="button_plant_edit">Edit</string>
+    <string name="button_plant_water">Water</string>
+    <string name="button_plant_fertilize">Fertilize</string>
+    <string name="button_plant_delete">Delete</string>
 </resources>

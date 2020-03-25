@@ -33,9 +33,9 @@ fun Date.getDaysAwayFromNow(includesTime: Boolean) : String {
     return returnString
 }
 
-fun Date.getDateAmountOfDaysAway(daysAway: Int, inputDate: Date = this): Date {
+fun Date.getDateAmountOfDaysAway(daysAway: Int): Date {
     val calendar = Calendar.getInstance()
-    calendar.time = inputDate
+    calendar.time = this
     val todaysDayOfTheYear = calendar.get(Calendar.DAY_OF_YEAR)
     val targetDay = todaysDayOfTheYear.plus(daysAway)
     calendar.set(Calendar.DAY_OF_YEAR, targetDay)
@@ -51,10 +51,14 @@ fun Date.getDateAtDesiredTime(hour: Int, minute: Int): Date {
     return calendar.time
 }
 
-fun Date.getHour(): Int {
+fun Date.getHour(modTwelve: Boolean): Int {
     val calendar = Calendar.getInstance()
     calendar.time = this
-    return calendar.get(Calendar.HOUR)
+    return if (modTwelve) {
+        calendar.get(Calendar.HOUR)
+    } else {
+        calendar.get(Calendar.HOUR_OF_DAY)
+    }
 }
 
 fun Date.getMinute() : Int {

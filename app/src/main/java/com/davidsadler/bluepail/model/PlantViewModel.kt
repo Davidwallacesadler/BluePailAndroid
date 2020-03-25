@@ -33,4 +33,7 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
         return repository.findById(plantId)
     }
 
+    fun delete(plant: Plant) {
+        repository.delete(plant)
+    }
 }

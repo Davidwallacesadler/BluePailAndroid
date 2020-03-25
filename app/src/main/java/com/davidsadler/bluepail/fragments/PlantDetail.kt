@@ -16,15 +16,16 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.ColorsAdapter
 import com.davidsadler.bluepail.adapters.OnColorSelectedListener
 import com.davidsadler.bluepail.model.Plant
-import com.davidsadler.bluepail.model.PlantRepository
 import com.davidsadler.bluepail.model.PlantViewModel
 import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_detail.*
+import androidx.lifecycle.Observer
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -64,6 +65,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         selectedColor = colorId
     }
 
+    private val args: PlantDetailArgs by navArgs()
     private var name = ""
     // TODO: needs to be red -- FIX MAGIC NUMBER PROBLEM HERE FOR COLOR
     private var selectedColor = -1754827
@@ -77,6 +79,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     lateinit var alarmManager: AlarmManager
     private lateinit var viewModel: PlantViewModel
+    private lateinit var colorsAdapter: ColorsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,6 +100,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         setupReminderClickListeners()
         setupTimePickers()
         setupPhotoImageButton()
+        updateUiForExistingPlantIfNeeded()
     }
 
     private fun setupAlarmManager() {
@@ -123,7 +127,8 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private fun setupColorRecyclerView() {
         this.context?.let { context ->
             recyclerView_plant_colors.layoutManager = GridLayoutManager(context,1,GridLayoutManager.HORIZONTAL,false)
-            recyclerView_plant_colors.adapter = ColorsAdapter(context,this)
+            colorsAdapter = ColorsAdapter(context,this)
+            recyclerView_plant_colors.adapter = colorsAdapter
         }
     }
 
@@ -210,9 +215,11 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun getAndSetPhoto() {
-        val bitMappedImage = BitmapFactory.decodeFile(photoUri)
-        val resizedBitmap = bitMappedImage.resize(250,250)
-        imageButton_plant_photo.setImageBitmap(resizedBitmap)
+        if (photoUri != null) {
+            val bitMappedImage = BitmapFactory.decodeFile(photoUri)
+            val resizedBitmap = bitMappedImage.resize(250,250)
+            imageButton_plant_photo.setImageBitmap(resizedBitmap)
+        }
     }
 
     private fun navigateToPlantList() {
@@ -233,14 +240,16 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 photoUri)
             if (plantId == 0) {
                 // TODO: Create alarm notifications
-                NotificationManager.scheduleNotification(plant.name,
+                AlarmNotificationManager.scheduleNotification(plant.name,
+                    plantId,
                     true,
                     plant.wateringDate,
                     this.context!!,
                     alarmManager)
                 if (fertilizingDate != null) {
                     fertilizingDate?.let {
-                        NotificationManager.scheduleNotification(plant.name,
+                        AlarmNotificationManager.scheduleNotification(plant.name,
+                            plantId,
                             false,
                             it,
                             this.context!!,
@@ -268,5 +277,29 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             }
         }
         return true
+    }
+
+    private fun updateUiForExistingPlantIfNeeded() {
+        if (args.plantId != 0) {
+            viewModel.findById(args.plantId).observe(this.activity!!, Observer { plant ->
+                plant.let {
+                    println(it)
+                    editText_plant_name.setText(it.name)
+                    colorsAdapter.selectedColor = it.colorId
+                    colorsAdapter.notifyDataSetChanged()
+                    // Somehow update color recycler
+                    wateringDate = it.wateringDate
+                    wateringInterval = it.daysBetweenWatering
+                    setupReminderUi(wateringDate!!,wateringInterval!!,false)
+                    fertilizingDate = it.fertilizerDate
+                    fertilizingInterval = it.daysBetweenFertilizing
+                    if (it.fertilizerDate != null && it.daysBetweenFertilizing != null) {
+                        setupReminderUi(it.fertilizerDate,it.daysBetweenFertilizing,true)
+                    }
+                    photoUri = it.photo
+                    getAndSetPhoto()
+                }
+            })
+        }
     }
 }

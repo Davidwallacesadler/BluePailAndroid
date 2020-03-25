@@ -17,6 +17,8 @@ class PlantRepository(private val plantDao: PlantDao) {
 
     fun update(plant: Plant) = plantDao.update(plant)
 
+    fun delete(plant: Plant) = plantDao.delete(plant)
+
     suspend fun deleteAll() = plantDao.deleteAll()
 
     companion object {
