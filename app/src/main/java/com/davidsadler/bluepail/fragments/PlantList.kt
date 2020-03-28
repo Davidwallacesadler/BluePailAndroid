@@ -1,12 +1,11 @@
 package com.davidsadler.bluepail.fragments
 
-import android.app.AlarmManager
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -30,9 +29,9 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                     selectedPlant.id,
                     true,
                     selectedPlant.wateringDate,
-                    this.context!!,
-                    this.alarmManager)
+                    this.context!!)
                 viewModel.update(selectedPlant)
+                Toast.makeText(this.context!!,"Plant watering reminder re-scheduled",Toast.LENGTH_SHORT).show()
             }
             PlantUpdateStatus.Fertilize -> {
                 // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
@@ -40,9 +39,9 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                     selectedPlant.id,
                     false,
                     selectedPlant.fertilizerDate!!,
-                    this.context!!,
-                    alarmManager)
+                    this.context!!)
                 viewModel.update(selectedPlant)
+                Toast.makeText(this.context!!,"Plant fertilizer reminder re-scheduled",Toast.LENGTH_SHORT).show()
             }
             PlantUpdateStatus.Edit -> {
                 val plantId = selectedPlant.id
@@ -51,14 +50,15 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                 Navigation.findNavController(this.view!!).navigate(action)
             }
             PlantUpdateStatus.Delete -> {
+                // TODO: CANCEL NOTIFICATIONS BEFORE DELETION
                 viewModel.delete(selectedPlant)
+                Toast.makeText(this.context!!,"Plant deleted",Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private lateinit var viewModel: PlantViewModel
     private lateinit var adapter: PlantsAdapter
-    private lateinit var alarmManager: AlarmManager
 
     override fun onItemClicked(selectedPlant: Plant) {
         // TODO: Display PlantListDialog -- pass plant as a param?
@@ -71,7 +71,6 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
         savedInstanceState: Bundle?
     ): View? {
         setupViewModel()
-        alarmManager = this.activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         return inflater.inflate(R.layout.fragment_plant_list, container, false)
     }
 

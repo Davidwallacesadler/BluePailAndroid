@@ -48,6 +48,8 @@ class PlantsAdapter internal constructor(context: Context, val itemClickedListen
         if (plant.photo != null) {
             val plantPhoto = BitmapFactory.decodeFile(plant.photo).resize(175,100)
             holder.iconImageView.setImageBitmap(plantPhoto)
+        } else {
+            holder.iconImageView.setImageResource(R.drawable.ic_launcher_background)
         }
         holder.nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
         if (plant.fertilizerDate != null) {

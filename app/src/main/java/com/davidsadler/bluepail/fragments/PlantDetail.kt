@@ -76,8 +76,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private var plantId = 0
     private var photoUri: String? = null
     private val REQUEST_IMAGE_CAPTURE = 1
-
-    lateinit var alarmManager: AlarmManager
     private lateinit var viewModel: PlantViewModel
     private lateinit var colorsAdapter: ColorsAdapter
 
@@ -93,7 +91,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupAlarmManager()
         inflateBottomToolbar()
         setupToolbarItems()
         setupColorRecyclerView()
@@ -101,12 +98,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         setupTimePickers()
         setupPhotoImageButton()
         updateUiForExistingPlantIfNeeded()
-    }
-
-    private fun setupAlarmManager() {
-        this.activity?.let {
-            alarmManager = it.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        }
     }
 
     private fun inflateBottomToolbar() {
@@ -244,16 +235,14 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                     plantId,
                     true,
                     plant.wateringDate,
-                    this.context!!,
-                    alarmManager)
+                    this.context!!)
                 if (fertilizingDate != null) {
                     fertilizingDate?.let {
                         AlarmNotificationManager.scheduleNotification(plant.name,
                             plantId,
                             false,
                             it,
-                            this.context!!,
-                            alarmManager)
+                            this.context!!)
                     }
                 }
                 viewModel.insert(plant)

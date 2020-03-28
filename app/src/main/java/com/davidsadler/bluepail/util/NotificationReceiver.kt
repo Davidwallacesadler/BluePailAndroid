@@ -16,6 +16,7 @@ class NotificationReceiver : BroadcastReceiver() {
         intent?.let {
             println("BROADCAST RECEIVER ON RECEIVE CALLED")
             val plantName = it.getStringExtra(EXTRA_NOTIFICATION_PLANT_NAME)
+            val plantId = it.getIntExtra(EXTRA_NOTIFICATION_PLANT_ID,0)
             val notificationIsForWatering = it.getBooleanExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL,true)
             val notificationTitle = when (notificationIsForWatering) {
                 true -> "Time to Water!"
@@ -28,7 +29,11 @@ class NotificationReceiver : BroadcastReceiver() {
             val notificationIntent = Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-            val pendingIntent = PendingIntent.getActivity(context,0,notificationIntent,0)
+            val pendingIntent = if (notificationIsForWatering) {
+                PendingIntent.getActivity(context,plantId,notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+            } else {
+                PendingIntent.getActivity(context, plantId + 1000, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            }
             val builder = NotificationCompat.Builder(context!!, "notifyBluePail")
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(notificationTitle)
@@ -39,7 +44,11 @@ class NotificationReceiver : BroadcastReceiver() {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
             with(NotificationManagerCompat.from(context)) {
-                notify(200,builder.build())
+                if (notificationIsForWatering) {
+                    notify(plantId,builder.build())
+                } else {
+                    notify(plantId + 1000,builder.build())
+                }
             }
         }
     }
