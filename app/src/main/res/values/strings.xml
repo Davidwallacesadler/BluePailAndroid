@@ -22,4 +22,6 @@
     <string name="button_plant_water">Water</string>
     <string name="button_plant_fertilize">Fertilize</string>
     <string name="button_plant_delete">Delete</string>
+    <string name="notification_channel_name">notifyBluePail</string>
+    <string name="notification_channel_description">Notifies the user when it is time to water or fertilize their plants</string>
 </resources>

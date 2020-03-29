@@ -1,8 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
-import android.app.AlarmManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -231,14 +229,14 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 photoUri)
             if (plantId == 0) {
                 // TODO: Create alarm notifications
-                AlarmNotificationManager.scheduleNotification(plant.name,
+                AlarmNotificationManager.scheduleNotificationAlarm(plant.name,
                     plantId,
                     true,
                     plant.wateringDate,
                     this.context!!)
                 if (fertilizingDate != null) {
                     fertilizingDate?.let {
-                        AlarmNotificationManager.scheduleNotification(plant.name,
+                        AlarmNotificationManager.scheduleNotificationAlarm(plant.name,
                             plantId,
                             false,
                             it,

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.customActionBar">
-        <receiver android:name=".util.NotificationReceiver"/>
+        <receiver android:name=".util.AlarmReceiver"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -25,7 +25,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
         when (status) {
             PlantUpdateStatus.Water -> {
                 // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
-                AlarmNotificationManager.scheduleNotification(selectedPlant.name,
+                AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
                     selectedPlant.id,
                     true,
                     selectedPlant.wateringDate,
@@ -35,7 +35,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
             }
             PlantUpdateStatus.Fertilize -> {
                 // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
-                AlarmNotificationManager.scheduleNotification(selectedPlant.name,
+                AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
                     selectedPlant.id,
                     false,
                     selectedPlant.fertilizerDate!!,
@@ -61,7 +61,6 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     private lateinit var adapter: PlantsAdapter
 
     override fun onItemClicked(selectedPlant: Plant) {
-        // TODO: Display PlantListDialog -- pass plant as a param?
         val listDetailDialog = PlantListDialog(selectedPlant, this)
         listDetailDialog.show(this.activity!!.supportFragmentManager,"plant_list_detail_dialog")
     }

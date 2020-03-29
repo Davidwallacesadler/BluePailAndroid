@@ -1,16 +1,22 @@
 package com.davidsadler.bluepail.util
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
+import android.provider.Settings.Global.getString
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.activities.MainActivity
 
-class NotificationReceiver : BroadcastReceiver() {
+class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
@@ -34,7 +40,7 @@ class NotificationReceiver : BroadcastReceiver() {
             } else {
                 PendingIntent.getActivity(context, plantId + 1000, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
             }
-            val builder = NotificationCompat.Builder(context!!, "notifyBluePail")
+            val builder = NotificationCompat.Builder(context!!, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationContent)
