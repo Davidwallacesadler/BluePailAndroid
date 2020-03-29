@@ -4,6 +4,7 @@
 <!--    <uses-permission android:name="android.permission.CAMERA"/>-->
 <!--    <uses-feature android:name="android.hardware.camera2" android:required="true"/>-->
     <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -12,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.customActionBar">
-        <receiver android:name=".util.AlarmReceiver"/>
+        <receiver
+            android:name=".util.AlarmReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.core.content.FileProvider"

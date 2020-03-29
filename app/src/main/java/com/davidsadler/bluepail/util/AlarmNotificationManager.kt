@@ -2,8 +2,10 @@ package com.davidsadler.bluepail.util
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import java.util.*
 
@@ -16,6 +18,8 @@ class AlarmNotificationManager {
                                       isWateringNotification: Boolean,
                                       fireDate: Date,
                                       context: Context) {
+            val receiver = ComponentName(context, AlarmReceiver::class.java)
+            context.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
             val intent = Intent(context, AlarmReceiver::class.java)
             intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, plantName)
             intent.putExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL,isWateringNotification)
