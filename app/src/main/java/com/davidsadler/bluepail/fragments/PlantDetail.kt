@@ -3,6 +3,7 @@ package com.davidsadler.bluepail.fragments
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -41,14 +42,18 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             if (timePickerTag is Int) {
                 when (timePickerTag) {
                     0 -> {
-                        val dateAtCorrectTime = wateringDate!!.getDateAtDesiredTime(hourOfDay,minute)
-                        wateringDate = dateAtCorrectTime
-                        textView_next_watering_reminder.text = dateAtCorrectTime.toString()
+                        wateringDate?.let {
+                            val dateAtCorrectTime = it.getDateAtDesiredTime(hourOfDay,minute)
+                            wateringDate = dateAtCorrectTime
+                            textView_next_watering_reminder.text = dateAtCorrectTime.toString()
+                        }
                     }
                     1 -> {
-                        val dateAtCorrectTime = fertilizingDate!!.getDateAtDesiredTime(hourOfDay,minute)
-                        fertilizingDate = dateAtCorrectTime
-                        textView_next_fertilizing.text = dateAtCorrectTime.toString()
+                        fertilizingDate?.let {
+                            val dateAtCorrectTime = it.getDateAtDesiredTime(hourOfDay,minute)
+                            fertilizingDate = dateAtCorrectTime
+                            textView_next_fertilizing.text = dateAtCorrectTime.toString()
+                        }
                     }
                 }
             }
@@ -64,7 +69,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private val args: PlantDetailArgs by navArgs()
-    private var name = ""
     // TODO: needs to be red -- FIX MAGIC NUMBER PROBLEM HERE FOR COLOR
     private var selectedColor = -1754827
     private var wateringDate: Date? = null
@@ -86,7 +90,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         this.activity?.let {
             viewModel = ViewModelProvider(it).get(PlantViewModel::class.java)
         }
-        return inflater.inflate(R.layout.fragment_plant_detail, container, false)
+         return inflater.inflate(R.layout.fragment_plant_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,6 +102,19 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         setupTimePickers()
         setupPhotoImageButton()
         updateUiForExistingPlantIfNeeded()
+        if (savedInstanceState != null) {
+            photoUri = savedInstanceState.getString("photo_uri")
+            getAndSetPhoto()
+            selectedColor = savedInstanceState.getInt("selected_color")
+            colorsAdapter.selectedColor = selectedColor
+
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("photo_uri",photoUri)
+        outState.putInt("selected_color",selectedColor)
     }
 
     private fun inflateBottomToolbar() {
@@ -157,12 +174,20 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             fertilizingDate = nextDate
             fertilizingInterval = interval
             timePicker_setup_fertilizing.isVisible = true
+            if (Build.VERSION.SDK_INT >= 23) {
+                timePicker_setup_fertilizing.hour = nextDate.getHour(false)
+                timePicker_setup_fertilizing.minute = nextDate.getMinute()
+            }
             textView_next_fertilizing.text = nextDate.toString()
             textView_fertilizing_interval.text = intervalText
         } else {
             wateringDate = nextDate
             wateringInterval = interval
             timePicker_watering_time.isVisible = true
+            if (Build.VERSION.SDK_INT >= 23) {
+                timePicker_watering_time.hour = nextDate.getHour(false)
+                timePicker_watering_time.minute = nextDate.getMinute()
+            }
             textView_next_watering_reminder.text = nextDate.toString()
             textView_watering_interval.text = intervalText
         }
@@ -249,6 +274,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 }
                 viewModel.insert(plant)
             } else {
+                plantId = args.plantId
                 editPlant?.let {
                     AlarmNotificationManager.cancelNotificationAlarm(plantId,true,this.context!!)
                     if (it.fertilizerDate != null) {
@@ -316,7 +342,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                     }
                 }
             })
-
         }
     }
 }

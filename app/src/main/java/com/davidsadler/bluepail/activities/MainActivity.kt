@@ -6,12 +6,14 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.fragments.PlantListDirections
@@ -37,6 +39,17 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         setupOnNavigationDestinationChangedListener()
+        initializeNavController()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putBundle("nav_state", navHostFragment.findNavController().saveState())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        navHostFragment.findNavController().restoreState(savedInstanceState.getBundle("nav_state"))
     }
 
     private fun setupActionBar(navController: NavController) {

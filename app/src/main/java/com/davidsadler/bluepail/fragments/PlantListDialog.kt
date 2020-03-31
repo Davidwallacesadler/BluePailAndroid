@@ -1,5 +1,7 @@
 package com.davidsadler.bluepail.fragments
 
+import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,11 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
         setupFertilizerClickListener()
         setupEditClickListener()
         setupDeleteClickListener()
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        retainInstance = true
+        return super.onCreateDialog(savedInstanceState)
     }
 
     private fun setupPlantTitleTextView() {
@@ -78,7 +85,9 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
                     selectedPlant.photo)
                 plantUpdatedListener.onPlantUpdated(updatePlant, PlantUpdateStatus.Fertilize)
             } else {
-                Toast.makeText(this.context!!,"No fertilizer reminders set", Toast.LENGTH_SHORT).show()
+                this.context?.let {
+                    Toast.makeText(it,"No fertilizer reminders set", Toast.LENGTH_SHORT).show()
+                }
             }
             this.dismiss()
         }
@@ -87,6 +96,7 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
     private fun setupEditClickListener() {
         button_edit_plant.setOnClickListener {
             // navigate to plant detail and pass the plant id as a safeArg
+            println("$selectedPlant")
             plantUpdatedListener.onPlantUpdated(selectedPlant, PlantUpdateStatus.Edit)
             this.dismiss()
         }
@@ -98,7 +108,9 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
                 plantUpdatedListener.onPlantUpdated(selectedPlant, PlantUpdateStatus.Delete)
                 this.dismiss()
             } else {
-                Toast.makeText(this.context!!, "Press delete again to confirm deletion",Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this.context!!, "Press delete again to confirm deletion",Toast.LENGTH_SHORT).show()
+                val deleteRed = Color.RED
+                button_delete_plant.setBackgroundColor(deleteRed)
                 deleteWasPressed = true
             }
         }

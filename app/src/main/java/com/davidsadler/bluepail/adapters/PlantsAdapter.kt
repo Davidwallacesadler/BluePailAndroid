@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.util.getDaysAwayFromNow
+import com.davidsadler.bluepail.util.rescale
 import com.davidsadler.bluepail.util.resize
 import kotlinx.android.synthetic.main.item_plant_list_cell.view.*
 import java.util.*
@@ -50,7 +51,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
         holder.titleLabel.text = plant.name
         holder.colorImageView.setBackgroundColor(plant.colorId)
         if (plant.photo != null) {
-            val plantPhoto = BitmapFactory.decodeFile(plant.photo).resize(175,100)
+            val plantPhoto = BitmapFactory.decodeFile(plant.photo).rescale(15)
             holder.iconImageView.setImageBitmap(plantPhoto)
         } else {
             holder.iconImageView.setImageResource(R.drawable.ic_launcher_background)

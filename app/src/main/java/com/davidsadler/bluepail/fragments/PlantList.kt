@@ -24,39 +24,49 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     override fun onPlantUpdated(selectedPlant: Plant, status: PlantUpdateStatus) {
         when (status) {
             PlantUpdateStatus.Water -> {
-                // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
-                AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
-                    selectedPlant.id,
-                    true,
-                    selectedPlant.wateringDate,
-                    this.context!!)
-                viewModel.update(selectedPlant)
-                Toast.makeText(this.context!!,"Plant watering reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                this.context?.let {
+                    // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
+                    AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
+                        selectedPlant.id,
+                        true,
+                        selectedPlant.wateringDate,
+                        it)
+                    viewModel.update(selectedPlant)
+//                    Toast.makeText(this.context!!,"Plant watering reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                }
             }
             PlantUpdateStatus.Fertilize -> {
                 // TODO: CHECK IF THERE IS ALREADY AN ALARM SCHEDULED
-                AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
-                    selectedPlant.id,
-                    false,
-                    selectedPlant.fertilizerDate!!,
-                    this.context!!)
-                viewModel.update(selectedPlant)
-                Toast.makeText(this.context!!,"Plant fertilizer reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                this.context?.let {
+                    AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
+                        selectedPlant.id,
+                        false,
+                        selectedPlant.fertilizerDate!!,
+                        it)
+                    viewModel.update(selectedPlant)
+                    Toast.makeText(this.context!!,"Plant fertilizer reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                }
             }
             PlantUpdateStatus.Edit -> {
                 val plantId = selectedPlant.id
                 println("passing Id : $plantId to plant detail fragment")
                 val action = PlantListDirections.actionPlantListToPlantDetail(selectedPlant.id)
-                Navigation.findNavController(this.view!!).navigate(action)
+//                val navController = Navigation.findNavController(this.activity!!,R.id.navHostFragment)
+//                navController.navigate(action)
+                this.view?.let {
+                    Navigation.findNavController(it).navigate(action)
+                }
+
             }
             PlantUpdateStatus.Delete -> {
                 // TODO: CANCEL NOTIFICATIONS BEFORE DELETION
-                AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,true,this.context!!)
-                if (selectedPlant.fertilizerDate != null) {
-                    AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,false,this.context!!)
+                this.context?.let {
+                    AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,true,it)
+                    if (selectedPlant.fertilizerDate != null) {
+                        AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,false,it)
+                    }
+                    viewModel.delete(selectedPlant)
                 }
-                viewModel.delete(selectedPlant)
-                Toast.makeText(this.context!!,"Plant deleted",Toast.LENGTH_SHORT).show()
             }
         }
     }

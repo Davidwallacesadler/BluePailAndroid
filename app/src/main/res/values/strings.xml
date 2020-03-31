@@ -17,6 +17,11 @@
     <string name="text_view_plant_fertilizing_reminder_header">Fertilizer Reminder (optional)</string>
     <string name="text_view_next_reminder_date_header">Next:</string>
     <string name="text_view_reminder_interval_header">Interval:</string>
+    <string name="text_view_fertilizer_date_header">NEXT FERTILIZING DATE</string>
+    <string name="text_view_fertilizer_interval_header">FERTILIZING INTERVAL</string>
+    <string name="text_view_reminder_setup_step_1">1. Select the day you want to be reminded next.</string>
+    <string name="text_view_reminder_setup_step_2">2. Select the second day you want to be reminded</string>
+    <string name="text_view_reminder_setup_step_3">3. Select the Done button when your ready, or select another day</string>
     <string name="image_button_plant_photo">Add a photo of your plant</string>
     <string name="button_plant_edit">Edit</string>
     <string name="button_plant_water">Water</string>
@@ -24,4 +29,6 @@
     <string name="button_plant_delete">Delete</string>
     <string name="notification_channel_name">notifyBluePail</string>
     <string name="notification_channel_description">Notifies the user when it is time to water or fertilize their plants</string>
+    <string name="toast_reminder_setup_select_future_date">Please select a date later than the first</string>
+    <string name="toast_reminder_setup_select_today">Please select a date starting with today</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,5 +16,10 @@ class PlantListFilterDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_plant_list_filter, container, false)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        retainInstance = true
+        return super.onCreateDialog(savedInstanceState)
     }
 }

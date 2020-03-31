@@ -1,5 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +32,7 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
             } else {
                 val differenceInDays = nextReminderDate.amountOfDaysToOtherDate(selectedDate)
                 if (differenceInDays <= 0) {
-                    Toast.makeText(this.activity,"Please select a date in the future", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this.activity,getString(R.string.toast_reminder_setup_select_future_date), Toast.LENGTH_SHORT).show()
                     calendarView_reminder_setup.date = nextReminderDate.time
                 } else {
                     val intervalText = when (differenceInDays) {
@@ -45,7 +46,7 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
                 }
             }
         } else {
-            Toast.makeText(this.activity,"Please select a date starting with today", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.activity,getString(R.string.toast_reminder_setup_select_today), Toast.LENGTH_SHORT).show()
             calendarView_reminder_setup.date = Date().time
         }
     }
@@ -67,15 +68,20 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
         }
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        retainInstance = true
+        return super.onCreateDialog(savedInstanceState)
+    }
+
     private fun changeColorsToFertilizerSchemeIfNeeded() {
         if (fertilizerSetup) {
             this.context?.let {
                 val fertilizerGreenColor = ContextCompat.getColor(it,R.color.fertilizerGreen)
                 button_done.setBackgroundColor(fertilizerGreenColor)
                 textView_selected_date_header.setTextColor(fertilizerGreenColor)
-                textView_selected_date_header.text = "NEXT FERTILIZING DATE"
+                textView_selected_date_header.text = getString(R.string.text_view_fertilizer_date_header)
                 textView_fertilizing_interval.setTextColor(fertilizerGreenColor)
-                textView_fertilizing_interval.text = "FERTILIZING INTERVAL"
+                textView_fertilizing_interval.text = getString(R.string.text_view_fertilizer_interval_header)
             }
         }
     }
@@ -90,9 +96,9 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
 
     private fun updateHintTextView(currentSetupStage: SetupStage) {
         textView_reminder_setup_hint.text = when (currentSetupStage) {
-            SetupStage.NEXT -> "1. Select the day you want to be reminded first."
-            SetupStage.INTERVAL -> "2. Select the day you want to be reminded after the first to determine the interval."
-            SetupStage.DONE -> "3. Select the Done button when your ready, or start the process again by selecting another day"
+            SetupStage.NEXT -> getString(R.string.text_view_reminder_setup_step_1)
+            SetupStage.INTERVAL -> getString(R.string.text_view_reminder_setup_step_2)
+            SetupStage.DONE -> getString(R.string.text_view_reminder_setup_step_3)
         }
     }
 }

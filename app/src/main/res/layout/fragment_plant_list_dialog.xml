@@ -73,7 +73,7 @@
             android:id="@+id/button_delete_plant"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorDelete"
+            android:background="#A8ABB2"
             android:text="@string/button_plant_delete"
             android:textColor="#FFFFFF" />
     </LinearLayout>
