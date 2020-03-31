@@ -2,6 +2,7 @@ package com.davidsadler.bluepail.adapters
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,15 @@ import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.util.getDaysAwayFromNow
 import com.davidsadler.bluepail.util.resize
 import kotlinx.android.synthetic.main.item_plant_list_cell.view.*
+import java.util.*
 
 interface OnItemClickedListener {
     fun onItemClicked(selectedPlant: Plant)
 }
 
-class PlantsAdapter internal constructor(context: Context, val itemClickedListener: OnItemClickedListener) : RecyclerView.Adapter<PlantsAdapter.PlantViewHolder>() {
+class PlantsAdapter internal constructor(context: Context, private val itemClickedListener: OnItemClickedListener) : RecyclerView.Adapter<PlantsAdapter.PlantViewHolder>() {
 
-    val inflater = LayoutInflater.from(context)
+    private val inflater = LayoutInflater.from(context)
     private var plants = emptyList<Plant>()
 
     inner class PlantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +31,8 @@ class PlantsAdapter internal constructor(context: Context, val itemClickedListen
         val nextWateringLabel: TextView = itemView.textView_plant_water_date
         val nextFertilizingLabel: TextView = itemView.textView_plant_fertilize_date
         val iconImageView: ImageView = itemView.imageView_plant_photo
+        val waterIconImageView: ImageView = itemView.imageView_plant_watered_status
+        val fertilizerIconImageView: ImageView = itemView.imageView_plant_fertilized_status
         fun bind(plant: Plant, clickListener: OnItemClickedListener) {
             itemView.setOnClickListener{
                 clickListener.onItemClicked(plant)
@@ -52,8 +56,18 @@ class PlantsAdapter internal constructor(context: Context, val itemClickedListen
             holder.iconImageView.setImageResource(R.drawable.ic_launcher_background)
         }
         holder.nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
+        if (plant.wateringDate <= Date()) {
+            holder.waterIconImageView.setColorFilter(Color.RED)
+        } else {
+            holder.waterIconImageView.clearColorFilter()
+        }
         if (plant.fertilizerDate != null) {
             holder.nextFertilizingLabel.text = plant.fertilizerDate.getDaysAwayFromNow(true)
+            if (plant.fertilizerDate <= Date()) {
+                holder.fertilizerIconImageView.setColorFilter(Color.RED)
+            } else {
+                holder.fertilizerIconImageView.clearColorFilter()
+            }
         } else {
             holder.nextFertilizingLabel.text = "N/A"
         }

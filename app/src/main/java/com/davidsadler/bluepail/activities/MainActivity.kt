@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.davidsadler.bluepail.R
+import com.davidsadler.bluepail.fragments.PlantListDirections
 import com.davidsadler.bluepail.util.NOTIFICATION_CHANNEL_DESCRIPTION
 import com.davidsadler.bluepail.util.NOTIFICATION_CHANNEL_ID
 import com.davidsadler.bluepail.util.NOTIFICATION_CHANNEL_NAME
@@ -48,8 +49,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val navigated = NavigationUI.onNavDestinationSelected(item,navController)
-        return navigated || super.onOptionsItemSelected(item)
+        return if (item.title == "appSettings") {
+            val action = PlantListDirections.actionPlantListToAppSettings()
+            navController.navigate(action)
+            true
+        } else {
+            val navigated = NavigationUI.onNavDestinationSelected(item,navController)
+            navigated || super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -63,7 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupFab() {
         fab_create_plant.setOnClickListener {
-            navController.navigate(R.id.plantDetail)
+            val action = PlantListDirections.actionPlantListToPlantDetail()
+            navController.navigate(action)
         }
     }
 

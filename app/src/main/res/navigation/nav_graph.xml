@@ -15,7 +15,18 @@
             app:destination="@id/plantListDialog" />
         <action
             android:id="@+id/action_plantList_to_plantDetail"
-            app:destination="@id/plantDetail" />
+            app:destination="@id/plantDetail"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_plantList_to_appSettings"
+            app:destination="@id/appSettings"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <dialog
@@ -32,6 +43,13 @@
             android:name="plantId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_plantDetail_to_plantList"
+            app:destination="@id/plantList"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <dialog

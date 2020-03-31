@@ -51,6 +51,10 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
             }
             PlantUpdateStatus.Delete -> {
                 // TODO: CANCEL NOTIFICATIONS BEFORE DELETION
+                AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,true,this.context!!)
+                if (selectedPlant.fertilizerDate != null) {
+                    AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,false,this.context!!)
+                }
                 viewModel.delete(selectedPlant)
                 Toast.makeText(this.context!!,"Plant deleted",Toast.LENGTH_SHORT).show()
             }
@@ -77,6 +81,11 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerViewLayout()
         setupPlantListObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
     }
 
     private fun setupRecyclerViewLayout() {

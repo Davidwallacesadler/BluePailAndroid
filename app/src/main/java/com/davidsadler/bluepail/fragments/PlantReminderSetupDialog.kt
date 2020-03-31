@@ -14,12 +14,11 @@ import com.davidsadler.bluepail.util.amountOfDaysToOtherDate
 import kotlinx.android.synthetic.main.fragment_plant_reminder_setup_dialog.*
 import java.util.*
 
-class PlantReminderSetupDialog internal constructor(val onReminderUpdatedListener: OnReminderUpdatedListener, val fertilizerSetup: Boolean) : DialogFragment(), CalendarView.OnDateChangeListener {
+class PlantReminderSetupDialog internal constructor(private val onReminderUpdatedListener: OnReminderUpdatedListener, private val fertilizerSetup: Boolean) : DialogFragment(), CalendarView.OnDateChangeListener {
 
     private var firstDateSelected = false
     private var nextReminderDate = Date()
     private var interval = 1
-   // private val args: PlantReminderSetupDialogArgs by navArgs()
 
     override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
         val selectedDate = getDateFromYearMonthDay(year,month,dayOfMonth)

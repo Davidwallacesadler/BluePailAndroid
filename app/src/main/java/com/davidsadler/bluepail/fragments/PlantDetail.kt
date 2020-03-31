@@ -76,6 +76,8 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private val REQUEST_IMAGE_CAPTURE = 1
     private lateinit var viewModel: PlantViewModel
     private lateinit var colorsAdapter: ColorsAdapter
+    private var editPlant: Plant? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -206,14 +208,16 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private fun getAndSetPhoto() {
         if (photoUri != null) {
             val bitMappedImage = BitmapFactory.decodeFile(photoUri)
-            val resizedBitmap = bitMappedImage.resize(250,250)
+            //val resizedBitmap = bitMappedImage.resize(250,250)
+            val resizedBitmap = bitMappedImage.rescale(10)
             imageButton_plant_photo.setImageBitmap(resizedBitmap)
         }
     }
 
     private fun navigateToPlantList() {
         this.view?.let {
-            Navigation.findNavController(it).navigate(R.id.plantList)
+            val action = PlantDetailDirections.actionPlantDetailToPlantList()
+            Navigation.findNavController(it).navigate(action)
         }
     }
 
@@ -245,6 +249,26 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                 }
                 viewModel.insert(plant)
             } else {
+                editPlant?.let {
+                    AlarmNotificationManager.cancelNotificationAlarm(plantId,true,this.context!!)
+                    if (it.fertilizerDate != null) {
+                        AlarmNotificationManager.cancelNotificationAlarm(plantId,false,this.context!!)
+                    }
+                }
+                AlarmNotificationManager.scheduleNotificationAlarm(plant.name,
+                    plantId,
+                    true,
+                    plant.wateringDate,
+                    this.context!!)
+                if (fertilizingDate != null) {
+                    fertilizingDate?.let {
+                        AlarmNotificationManager.scheduleNotificationAlarm(plant.name,
+                            plantId,
+                            false,
+                            it,
+                            this.context!!)
+                    }
+                }
                 viewModel.update(plant)
                 // TODO: Cancel alarm notifications if there are any... somehow
             }
@@ -270,23 +294,29 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         if (args.plantId != 0) {
             viewModel.findById(args.plantId).observe(this.activity!!, Observer { plant ->
                 plant.let {
-                    println(it)
-                    editText_plant_name.setText(it.name)
-                    colorsAdapter.selectedColor = it.colorId
-                    colorsAdapter.notifyDataSetChanged()
-                    // Somehow update color recycler
-                    wateringDate = it.wateringDate
-                    wateringInterval = it.daysBetweenWatering
-                    setupReminderUi(wateringDate!!,wateringInterval!!,false)
-                    fertilizingDate = it.fertilizerDate
-                    fertilizingInterval = it.daysBetweenFertilizing
-                    if (it.fertilizerDate != null && it.daysBetweenFertilizing != null) {
-                        setupReminderUi(it.fertilizerDate,it.daysBetweenFertilizing,true)
+                    editPlant = it
+                    if (editPlant != null) {
+                        editPlant?.let { editPlant ->
+                            editText_plant_name.setText(editPlant.name)
+                            colorsAdapter.selectedColor = editPlant.colorId
+                            colorsAdapter.notifyDataSetChanged()
+                            selectedColor = editPlant.colorId
+                            plantId = editPlant.id
+                            wateringDate = editPlant.wateringDate
+                            wateringInterval = editPlant.daysBetweenWatering
+                            setupReminderUi(wateringDate!!,wateringInterval!!,false)
+                            fertilizingDate = editPlant.fertilizerDate
+                            fertilizingInterval = editPlant.daysBetweenFertilizing
+                            if (editPlant.fertilizerDate != null && editPlant.daysBetweenFertilizing != null) {
+                                setupReminderUi(editPlant.fertilizerDate,editPlant.daysBetweenFertilizing,true)
+                            }
+                            photoUri = editPlant.photo
+                            getAndSetPhoto()
+                        }
                     }
-                    photoUri = it.photo
-                    getAndSetPhoto()
                 }
             })
+
         }
     }
 }

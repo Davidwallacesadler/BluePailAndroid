@@ -8,6 +8,12 @@ fun Bitmap.resize(width: Int, height: Int) : Bitmap {
     return Bitmap.createScaledBitmap(this,width,height,false)
 }
 
+fun Bitmap.rescale(scaleFactor: Int) : Bitmap {
+    val bitmapHeight = this.height
+    val bitmapWidth = this.width
+    return Bitmap.createScaledBitmap(this,bitmapWidth.div(scaleFactor),bitmapHeight.div(scaleFactor),false)
+}
+
 fun Bitmap.compress(quality: Int) : Bitmap {
     val stream = ByteArrayOutputStream()
     this.compress(Bitmap.CompressFormat.JPEG,quality,stream)
