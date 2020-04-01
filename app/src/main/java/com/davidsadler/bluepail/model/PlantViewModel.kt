@@ -21,16 +21,8 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
         allPlants = repository.allPlants
     }
 
-    fun insert(plant: Plant) = viewModelScope.launch {
-        repository.insert(plant)
-    }
-
     fun update(plant: Plant) = viewModelScope.launch {
         repository.update(plant)
-    }
-
-    fun findById(plantId: Int) : LiveData<Plant> {
-        return repository.findById(plantId)
     }
 
     fun delete(plant: Plant) {
