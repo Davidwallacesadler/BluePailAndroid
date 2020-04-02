@@ -7,7 +7,7 @@
     <string name="menu_item_save">Save</string>
     <string name="menu_item_cancel">Cancel</string>
     <string name="text_view_plant_title_header">Title</string>
-    <string name="text_view_plant_color_header">Color</string>
+    <string name="text_view_plant_color_header">Color Group</string>
     <string name="text_view_plant_reminder_header">Reminders</string>
     <string name="text_view_plant_photo_header">Thumbnail (optional)</string>
     <string name="edit_text_plant_title_hint">Enter a plant name</string>
@@ -20,8 +20,8 @@
     <string name="text_view_fertilizer_date_header">NEXT FERTILIZING DATE</string>
     <string name="text_view_fertilizer_interval_header">FERTILIZING INTERVAL</string>
     <string name="text_view_reminder_setup_step_1">1. Select the day you want to be reminded next.</string>
-    <string name="text_view_reminder_setup_step_2">2. Select the second day you want to be reminded</string>
-    <string name="text_view_reminder_setup_step_3">3. Select the Done button when your ready, or select another day</string>
+    <string name="text_view_reminder_setup_step_2">2. Select the second day you want to be reminded.</string>
+    <string name="text_view_reminder_setup_step_3">3. Select the Done button or select another day.</string>
     <string name="image_button_plant_photo">Add a photo of your plant</string>
     <string name="button_plant_edit">Edit</string>
     <string name="button_plant_water">Water</string>

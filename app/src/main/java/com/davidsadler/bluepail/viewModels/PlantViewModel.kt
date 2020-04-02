@@ -1,9 +1,12 @@
-package com.davidsadler.bluepail.model
+package com.davidsadler.bluepail.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.davidsadler.bluepail.model.Plant
+import com.davidsadler.bluepail.model.PlantRepository
+import com.davidsadler.bluepail.model.PlantRoomDatabase
 import kotlinx.coroutines.launch
 
 class PlantViewModel(application: Application) : AndroidViewModel(application) {
@@ -16,7 +19,10 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
     init {
         // Gets reference to PlantDao from PlantRoomDatabase to construct
         // the correct Repository.
-        val plantsDao = PlantRoomDatabase.getDatabase(application,viewModelScope).plantDao()
+        val plantsDao = PlantRoomDatabase.getDatabase(
+            application,
+            viewModelScope
+        ).plantDao()
         repository = PlantRepository(plantsDao)
         allPlants = repository.allPlants
     }

@@ -14,7 +14,7 @@ import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.OnItemClickedListener
 import com.davidsadler.bluepail.adapters.PlantsAdapter
 import com.davidsadler.bluepail.model.Plant
-import com.davidsadler.bluepail.model.PlantViewModel
+import com.davidsadler.bluepail.viewModels.PlantViewModel
 import com.davidsadler.bluepail.util.AlarmNotificationManager
 import kotlinx.android.synthetic.main.fragment_plant_list.*
 

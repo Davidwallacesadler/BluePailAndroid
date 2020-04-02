@@ -41,28 +41,21 @@
                     android:text="@string/text_view_plant_title_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-                <Space
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/editText_plant_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="@string/edit_text_plant_title_hint"
-                    android:ems="10"
-                    android:hint="@string/edit_text_plant_title_hint"
-                    android:imeOptions="actionDone"
-                    android:inputType="textCapWords"/>
+                    <EditText
+                        android:id="@+id/editText_plant_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="@string/edit_text_plant_title_hint"
+                        android:ems="10"
+                        android:hint="@string/edit_text_plant_title_hint"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapWords"/>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimary" />
+                </androidx.cardview.widget.CardView>
 
                 <Space
                     android:layout_width="match_parent"
@@ -74,24 +67,20 @@
                     android:text="@string/text_view_plant_color_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView_plant_colors"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:focusable="true"
-                    android:layoutDirection="inherit">
+                    android:layout_height="wrap_content">
 
-                </androidx.recyclerview.widget.RecyclerView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_plant_colors"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:focusable="true"
+                        android:layoutDirection="inherit">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimary" />
+                </androidx.cardview.widget.CardView>
 
                 <Space
                     android:layout_width="match_parent"
@@ -103,196 +92,203 @@
                     android:text="@string/text_view_plant_reminder_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-                <Space
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="155dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_view_plant_watering_reminder_header"
-                            android:textColor="@color/colorPrimary" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/text_view_next_reminder_date_header" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="match_parent" />
-
-                            <TextView
-                                android:id="@+id/textView_next_watering_reminder"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Select the calendar icon" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/text_view_reminder_interval_header" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="match_parent" />
-
-                            <TextView
-                                android:id="@+id/textView_watering_interval"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-
-                        <TimePicker
-                            android:id="@+id/timePicker_watering_time"
-                            android:layout_width="378dp"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:timePickerMode="spinner"
-                            android:visibility="invisible"
-                            tools:targetApi="LOLLIPOP" />
-
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:id="@+id/imageButton_setup_watering"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="#F9F9F9"
-                        android:contentDescription="@string/image_button_watering_setup"
-                        android:focusable="true"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/button_calendar_setup" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <View
-                    android:layout_width="@android:dimen/thumbnail_width"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimary" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="155dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-                        <TextView
+                        <Space
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/text_view_plant_fertilizing_reminder_header"
-                            android:textColor="@color/fertilizerGreen" />
+                            android:layout_height="10dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="155dp"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/text_view_next_reminder_date_header" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="match_parent" />
-
-                            <TextView
-                                android:id="@+id/textView_next_fertilizing"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="Select the calendar icon" />
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/text_view_plant_watering_reminder_header"
+                                    android:textColor="@color/colorPrimary" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/text_view_next_reminder_date_header" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="match_parent" />
+
+                                    <TextView
+                                        android:id="@+id/textView_next_watering_reminder"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Select the calendar icon" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/text_view_reminder_interval_header" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="match_parent" />
+
+                                    <TextView
+                                        android:id="@+id/textView_watering_interval"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                                <TimePicker
+                                    android:id="@+id/timePicker_watering_time"
+                                    android:layout_width="378dp"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="true"
+                                    android:timePickerMode="spinner"
+                                    android:visibility="invisible"
+                                    tools:targetApi="LOLLIPOP" />
+
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/imageButton_setup_watering"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="#F9F9F9"
+                                android:contentDescription="@string/image_button_watering_setup"
+                                android:focusable="true"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/button_calendar_setup" />
                         </LinearLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/colorPrimary"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="155dp"
                             android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/text_view_reminder_interval_header" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="match_parent" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/text_view_plant_fertilizing_reminder_header"
+                                    android:textColor="@color/fertilizerGreen" />
 
-                            <TextView
-                                android:id="@+id/textView_fertilizing_interval"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/text_view_next_reminder_date_header" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="match_parent" />
+
+                                    <TextView
+                                        android:id="@+id/textView_next_fertilizing"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="Select the calendar icon" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/text_view_reminder_interval_header" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="match_parent" />
+
+                                    <TextView
+                                        android:id="@+id/textView_fertilizing_interval"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1" />
+                                </LinearLayout>
+
+                                <TimePicker
+                                    android:id="@+id/timePicker_setup_fertilizing"
+                                    android:layout_width="381dp"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="true"
+                                    android:timePickerMode="spinner"
+                                    android:visibility="invisible"
+                                    tools:targetApi="LOLLIPOP" />
+
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/imageButton_setup_fertilizing"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_weight="0"
+                                android:background="#F9F9F9"
+                                android:contentDescription="@string/image_button_fertilizing_setup"
+                                android:focusable="false"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/button_calendar_setup" />
                         </LinearLayout>
-
-                        <TimePicker
-                            android:id="@+id/timePicker_setup_fertilizing"
-                            android:layout_width="381dp"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:timePickerMode="spinner"
-                            android:visibility="invisible"
-                            tools:targetApi="LOLLIPOP" />
 
                     </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/imageButton_setup_fertilizing"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="0"
-                        android:background="#F9F9F9"
-                        android:contentDescription="@string/image_button_fertilizing_setup"
-                        android:focusable="false"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/button_calendar_setup" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimary" />
+                </androidx.cardview.widget.CardView>
 
                 <Space
                     android:layout_width="match_parent"
@@ -304,16 +300,29 @@
                     android:text="@string/text_view_plant_photo_header"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-                <ImageButton
-                    android:id="@+id/imageButton_plant_photo"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
-                    android:contentDescription="@string/image_button_plant_photo"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/image_button_photo" />
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/imageButton_plant_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:contentDescription="@string/image_button_plant_photo"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/image_button_photo" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
 
             </LinearLayout>
+
         </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

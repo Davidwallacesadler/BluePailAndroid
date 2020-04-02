@@ -1,9 +1,12 @@
-package com.davidsadler.bluepail.model
+package com.davidsadler.bluepail.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.davidsadler.bluepail.model.Plant
+import com.davidsadler.bluepail.model.PlantRepository
+import com.davidsadler.bluepail.model.PlantRoomDatabase
 import com.davidsadler.bluepail.util.getDateAtDesiredTime
 import kotlinx.coroutines.launch
 import java.util.*
@@ -13,7 +16,10 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
     private val repository: PlantRepository
 
     init {
-        val plantsDao = PlantRoomDatabase.getDatabase(application,viewModelScope).plantDao()
+        val plantsDao = PlantRoomDatabase.getDatabase(
+            application,
+            viewModelScope
+        ).plantDao()
         repository = PlantRepository(plantsDao)
     }
 
@@ -121,7 +127,16 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun savePlant() {
-        val plant = Plant(id,name,colorId,wateringDate!!,wateringInterval!!,fertilizingDate,fertilizingInterval,photoUri)
+        val plant = Plant(
+            id,
+            name,
+            colorId,
+            wateringDate!!,
+            wateringInterval!!,
+            fertilizingDate,
+            fertilizingInterval,
+            photoUri
+        )
         if (id != 0) {
             update(plant)
         } else {
