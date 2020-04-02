@@ -93,6 +93,11 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         checkIfPlantWasSelected()
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+
     private fun inflateBottomToolbar() {
         toolbar_cancel_save.inflateMenu(R.menu.detail_toolbar)
     }
@@ -117,7 +122,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun setupReminderClickListeners() {
-        // TODO: DRY
         this.view?.let {
             imageButton_setup_watering.setOnClickListener {
                 val setupDialog = PlantReminderSetupDialog(this,false)
@@ -248,10 +252,10 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun updatePhotoImageButton() {
-        val picasso = Picasso.get()
         val photoFilePath = viewModel.getPhotoUri()
         if (photoFilePath != null) {
             val photoUri = Uri.parse("file://$photoFilePath")
+            val picasso = Picasso.get()
                 picasso
                     .load(photoUri).resize(250,250)
                     .centerInside()
