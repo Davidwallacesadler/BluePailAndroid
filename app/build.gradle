@@ -48,17 +48,20 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
-    def room_version = "2.2.4"
+    def room_version = "2.2.5"
     // ROOM
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
-    def nav_version = "2.3.0-alpha03"
+    def nav_version = "2.3.0-alpha04"
     // Jetpack Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    def picassoVersion = "2.71828"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
 
     // Lifecycle components
 //    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"

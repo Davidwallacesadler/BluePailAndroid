@@ -3,6 +3,7 @@ package com.davidsadler.bluepail.adapters
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.util.getDaysAwayFromNow
-import com.davidsadler.bluepail.util.rescale
-import com.davidsadler.bluepail.util.resize
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_plant_list_cell.view.*
 import java.util.*
 
@@ -51,10 +51,16 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
         holder.titleLabel.text = plant.name
         holder.colorImageView.setBackgroundColor(plant.colorId)
         if (plant.photo != null) {
-            val plantPhoto = BitmapFactory.decodeFile(plant.photo).rescale(15)
-            holder.iconImageView.setImageBitmap(plantPhoto)
+            val picasso = Picasso.get()
+            val photoString = plant.photo
+            val photoUri = Uri.parse("file://$photoString")
+            picasso
+                .load(photoUri).resize(150,150)
+                .placeholder(R.drawable.item_view_default_plant_photo)
+                .error(R.drawable.fab_plus)
+                .into(holder.iconImageView)
         } else {
-            holder.iconImageView.setImageResource(R.drawable.ic_launcher_background)
+            holder.iconImageView.setImageResource(R.drawable.item_view_default_plant_photo)
         }
         holder.nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
         if (plant.wateringDate <= Date()) {

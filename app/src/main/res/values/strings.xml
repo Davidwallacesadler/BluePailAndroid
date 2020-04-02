@@ -9,7 +9,7 @@
     <string name="text_view_plant_title_header">Title</string>
     <string name="text_view_plant_color_header">Color</string>
     <string name="text_view_plant_reminder_header">Reminders</string>
-    <string name="text_view_plant_photo_header">Photo (optional)</string>
+    <string name="text_view_plant_photo_header">Thumbnail (optional)</string>
     <string name="edit_text_plant_title_hint">Enter a plant name</string>
     <string name="image_button_watering_setup">Setup your plants watering schedule</string>
     <string name="image_button_fertilizing_setup">Setup you plants fertilizing schedule</string>

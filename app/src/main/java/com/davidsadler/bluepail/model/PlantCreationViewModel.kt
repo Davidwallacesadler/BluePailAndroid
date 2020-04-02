@@ -60,8 +60,8 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
 
     fun getReminderIntervalInDays(isWateringReminder: Boolean): String {
         return when (val interval = if (isWateringReminder) wateringInterval!! else fertilizingInterval!!) {
-            1 -> "1 day"
-            else -> "$interval days"
+            1 -> "1 Day"
+            else -> "$interval Days"
         }
     }
 
@@ -82,6 +82,7 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun setWateringTime(hour: Int, minute: Int) {
+        println("Setting Waterin time to $hour : $minute")
         this.wateringDate = wateringDate?.getDateAtDesiredTime(hour,minute)
     }
 

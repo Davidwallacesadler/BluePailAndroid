@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -25,6 +26,7 @@ import com.davidsadler.bluepail.adapters.OnColorSelectedListener
 import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_detail.*
 import com.davidsadler.bluepail.model.PlantCreationViewModel
+import com.squareup.picasso.Picasso
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -228,10 +230,10 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             if (!timePicker_watering_time.isVisible) {
                 timePicker_watering_time.isVisible = true
             }
-            if (Build.VERSION.SDK_INT >= 23) {
-                timePicker_watering_time.hour = viewModel.getWateringDate()!!.getHour(false)
-                timePicker_watering_time.minute = viewModel.getWateringDate()!!.getMinute()
-            }
+//            if (Build.VERSION.SDK_INT >= 23) {
+//                timePicker_watering_time.hour = viewModel.getWateringDate()!!.getHour(false)
+//                timePicker_watering_time.minute = viewModel.getWateringDate()!!.getMinute()
+//            }
         }
     }
 
@@ -242,42 +244,45 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             if (!timePicker_setup_fertilizing.isVisible) {
                 timePicker_setup_fertilizing.isVisible = true
             }
-            if (Build.VERSION.SDK_INT >= 23) {
-                timePicker_setup_fertilizing.hour = viewModel.getFertilizingDate()!!.getHour(false)
-                timePicker_setup_fertilizing.minute = viewModel.getFertilizingDate()!!.getMinute()
-            }
+//            if (Build.VERSION.SDK_INT >= 23) {
+//                timePicker_setup_fertilizing.hour = viewModel.getFertilizingDate()!!.getHour(false)
+//                timePicker_setup_fertilizing.minute = viewModel.getFertilizingDate()!!.getMinute()
+//            }
         }
     }
 
     private fun updatePhotoImageButton() {
-        if (viewModel.getPhotoUri() != null) {
-            Thread(Runnable {
-                val bitMappedImage = BitmapFactory.decodeFile(viewModel.getPhotoUri())
-                val resizedBitmap = bitMappedImage.rescale(10)
-                imageButton_plant_photo.post {
-                    imageButton_plant_photo.setImageBitmap(resizedBitmap)
-                }
-            }).start()
+        val picasso = Picasso.get()
+        val photoFilePath = viewModel.getPhotoUri()
+        if (photoFilePath != null) {
+            val photoUri = Uri.parse("file://$photoFilePath")
+                picasso
+                    .load(photoUri).resize(250,250)
+                    .centerInside()
+                    .placeholder(R.drawable.image_button_photo)
+                    .into(imageButton_plant_photo)
         }
     }
 
     private fun checkIfPlantWasSelected() {
         if (args.plantId != 0) {
-            viewModel.findById(args.plantId).observe(viewLifecycleOwner, androidx.lifecycle.Observer { plant ->
-                viewModel.setPlantName(plant.name)
-                viewModel.setPlantId(plant.id)
-                viewModel.setColorId(plant.colorId)
-                viewModel.setWateringDate(plant.wateringDate)
-                viewModel.setWateringInterval(plant.daysBetweenWatering)
-                viewModel.setFertilizingDate(plant.fertilizerDate)
-                viewModel.setFertilizingInterval(plant.daysBetweenFertilizing)
-                viewModel.setPhotoUri(plant.photo)
-                updateNameEditText()
-                updateColorRecyclerView()
-                updateWateringReminderElements()
-                updateFertilizingReminderElements()
-                updatePhotoImageButton()
-            })
+            if (viewModel.getId() == 0) {
+                viewModel.findById(args.plantId).observe(viewLifecycleOwner, androidx.lifecycle.Observer { plant ->
+                    viewModel.setPlantName(plant.name)
+                    viewModel.setPlantId(plant.id)
+                    viewModel.setColorId(plant.colorId)
+                    viewModel.setWateringDate(plant.wateringDate)
+                    viewModel.setWateringInterval(plant.daysBetweenWatering)
+                    viewModel.setFertilizingDate(plant.fertilizerDate)
+                    viewModel.setFertilizingInterval(plant.daysBetweenFertilizing)
+                    viewModel.setPhotoUri(plant.photo)
+                    updateNameEditText()
+                    updateColorRecyclerView()
+                    updateWateringReminderElements()
+                    updateFertilizingReminderElements()
+                    updatePhotoImageButton()
+                })
+            }
         }
     }
 }
