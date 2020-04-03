@@ -37,19 +37,11 @@ class PlantReminderViewModel(application: Application): AndroidViewModel(applica
         }
     }
 
-    fun updateFirstDate(date: Date) {
+    fun updateFirstDate(date: Date?) {
         firstDate = date
     }
 
-    fun updateSecondDate(date: Date) {
+    fun updateSecondDate(date: Date?) {
         secondDate = date
-    }
-
-    fun getDateFromYearMonthDay(year: Int,month: Int,dayOfMonth: Int) : Date {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        return calendar.time
     }
 }

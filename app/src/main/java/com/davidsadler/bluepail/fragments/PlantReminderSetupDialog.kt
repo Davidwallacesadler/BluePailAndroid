@@ -4,23 +4,42 @@ import android.app.Dialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.OrientationEventListener
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.davidsadler.bluepail.R
-import com.davidsadler.bluepail.util.amountOfDaysToOtherDate
 import com.davidsadler.bluepail.viewModels.PlantReminderViewModel
+import com.squareup.timessquare.CalendarPickerView
 import kotlinx.android.synthetic.main.fragment_plant_reminder_setup_dialog.*
 import java.util.*
 
-class PlantReminderSetupDialog internal constructor(private val onReminderUpdatedListener: OnReminderUpdatedListener, private val fertilizerSetup: Boolean) : DialogFragment(), CalendarView.OnDateChangeListener, View.OnClickListener {
+class PlantReminderSetupDialog internal constructor(private val onReminderUpdatedListener: OnReminderUpdatedListener, private val fertilizerSetup: Boolean) : DialogFragment(), View.OnClickListener, CalendarPickerView.OnDateSelectedListener  {
 
     private lateinit var viewModel: PlantReminderViewModel
+
+    override fun onDateSelected(date: Date?) {
+        date?.let { selectedDate ->
+            if (viewModel.getFirstDate() == null) {
+                viewModel.updateFirstDate(selectedDate)
+                updateUiOnFirstDateSelected()
+            } else {
+                viewModel.updateSecondDate(selectedDate)
+                updateUiOnSecondDateSelected()
+            }
+        }
+    }
+
+    override fun onDateUnselected(date: Date?) {
+        if (viewModel.getFirstDate() != null) {
+            viewModel.updateFirstDate(null)
+            viewModel.updateSecondDate(null)
+            textView_interval.text = getString(R.string.text_view_reminder_interval_placeholder)
+        }
+    }
 
     override fun onClick(v: View?) {
         if (allRequiredParametersAreSet()) {
@@ -29,44 +48,31 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
         }
     }
 
-    override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
-        val selectedDate = viewModel.getDateFromYearMonthDay(year,month,dayOfMonth)
-        if (selectedDate >= Date()) {
-            if (viewModel.getFirstDate() == null) {
-                viewModel.updateFirstDate(selectedDate)
-                updateUiOnFirstDateSelected()
-            } else {
-                val differenceInDays = viewModel.getFirstDate()!!.amountOfDaysToOtherDate(selectedDate)
-                if (differenceInDays <= 0) {
-                    showToastWithText(getString(R.string.toast_reminder_setup_select_future_date))
-                    calendarView_reminder_setup.date = viewModel.getFirstDate()!!.time
-                } else {
-                    viewModel.updateSecondDate(selectedDate)
-                    updateUiOnSecondDateSelected()
-                }
-            }
-        } else {
-            showToastWithText(getString(R.string.toast_reminder_setup_select_today))
-            calendarView_reminder_setup.date = Date().time
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setupViewModel()
+
         return inflater.inflate(R.layout.fragment_plant_reminder_setup_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupCalendarGrid()
         changeColorsToFertilizerSchemeIfNeeded()
-        setupCalendarClickListener()
         setupDoneButtonClickListener()
-        updateUiBasedOnProgress()
+        updateUiOnFirstDateSelected()
+        updateUiOnSecondDateSelected()
     }
 
+    override fun onResume() {
+        super.onResume()
+        val params:ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        params.width = LinearLayout.LayoutParams.MATCH_PARENT
+        params.height = LinearLayout.LayoutParams.WRAP_CONTENT
+        dialog!!.window!!.attributes = params as android.view.WindowManager.LayoutParams
+    }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         retainInstance = true
@@ -76,6 +82,14 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
     override fun onDestroy() {
         super.onDestroy()
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+    }
+
+    private fun setupCalendarGrid() {
+        val today = Date()
+        val oneYearInTheFuture = Calendar.getInstance()
+        oneYearInTheFuture.add(Calendar.YEAR, 1)
+        calendarView_reminder_setup.init(today,oneYearInTheFuture.time).inMode(CalendarPickerView.SelectionMode.RANGE)
+        calendarView_reminder_setup.setOnDateSelectedListener(this)
     }
 
     private fun setupViewModel() {
@@ -93,10 +107,6 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
                 textView_fertilizing_interval.text = getString(R.string.text_view_fertilizer_interval_header)
             }
         }
-    }
-
-    private fun setupCalendarClickListener() {
-        calendarView_reminder_setup.setOnDateChangeListener(this)
     }
 
     private fun setupDoneButtonClickListener() {
@@ -117,19 +127,6 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
         }
     }
 
-    private fun updateUiBasedOnProgress() {
-        if (viewModel.getFirstDate() != null) {
-            textView_firstDate.text = viewModel.getFirstDate().toString()
-            updateHintTextView(SetupStage.SECOND)
-            calendarView_reminder_setup.date = viewModel.getFirstDate()!!.time
-        }
-        if (viewModel.getSecondDate() != null) {
-            textView_interval.text = viewModel.getReadableInterval()
-            updateHintTextView(SetupStage.DONE)
-            calendarView_reminder_setup.date = viewModel.getSecondDate()!!.time
-        }
-    }
-
     private fun updateHintTextView(currentSetupStage: SetupStage) {
         textView_reminder_setup_hint.text = when (currentSetupStage) {
             SetupStage.FIRST -> getString(R.string.text_view_reminder_setup_step_1)
@@ -145,6 +142,7 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
         }
         if (viewModel.getSecondDate() == null) {
             showToastWithText("Please select the second date")
+            return false
         }
         return true
     }

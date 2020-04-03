@@ -95,6 +95,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun onResume() {
         super.onResume()
+        // TODO: Need to make sure the nav bar items aren't visible on orientation change
     }
 
 
