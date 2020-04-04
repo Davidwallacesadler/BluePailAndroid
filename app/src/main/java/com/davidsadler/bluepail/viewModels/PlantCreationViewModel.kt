@@ -66,8 +66,22 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
 
     fun getReminderIntervalInDays(isWateringReminder: Boolean): String {
         return when (val interval = if (isWateringReminder) wateringInterval!! else fertilizingInterval!!) {
-            1 -> "1 Day"
-            else -> "$interval Days"
+            1 -> "Every Day"
+            else -> readableDayAndWeekInterval(interval)
+        }
+    }
+
+    private fun readableDayAndWeekInterval(interval: Int): String {
+        val weekCount = interval.div(7)
+        return if (weekCount > 0) {
+            val daysIntoWeek = interval.rem(7)
+            var returnString = when (weekCount) {1 -> "Every Week" else -> "Every $weekCount Weeks" }
+            if (daysIntoWeek > 0) {
+                returnString = returnString.plus(when (daysIntoWeek) {1 -> " and 1 Day" else -> " and $daysIntoWeek Days" })
+            }
+            returnString
+        } else {
+            "Every $interval Days"
         }
     }
 

@@ -3,6 +3,7 @@ package com.davidsadler.bluepail.viewModels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.davidsadler.bluepail.util.amountOfDaysToOtherDate
+import com.davidsadler.bluepail.util.getDaysAwayFromAnotherDate
 import java.util.*
 
 class PlantReminderViewModel(application: Application): AndroidViewModel(application) {
@@ -28,10 +29,7 @@ class PlantReminderViewModel(application: Application): AndroidViewModel(applica
 
     fun getReadableInterval(): String? {
         return if (firstDate != null && secondDate != null) {
-            when (val interval = firstDate!!.amountOfDaysToOtherDate(secondDate!!)) {
-                1 -> "1 Day"
-                else -> "$interval Days"
-            }
+            firstDate!!.getDaysAwayFromAnotherDate(secondDate!!,false)
         } else {
             null
         }

@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.davidsadler.bluepail.R
+import com.davidsadler.bluepail.util.toShortString
 import com.davidsadler.bluepail.viewModels.PlantReminderViewModel
 import com.squareup.timessquare.CalendarPickerView
 import kotlinx.android.synthetic.main.fragment_plant_reminder_setup_dialog.*
@@ -115,7 +116,7 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
 
     private fun updateUiOnFirstDateSelected() {
         if (viewModel.getFirstDate() != null) {
-            textView_firstDate.text = viewModel.getFirstDate().toString()
+            textView_firstDate.text = viewModel.getFirstDate()!!.toShortString(false)
             updateHintTextView(SetupStage.SECOND)
         }
     }

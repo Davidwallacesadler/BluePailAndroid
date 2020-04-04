@@ -93,12 +93,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         checkIfPlantWasSelected()
     }
 
-    override fun onResume() {
-        super.onResume()
-        // TODO: Need to make sure the nav bar items aren't visible on orientation change
-    }
-
-
     private fun inflateBottomToolbar() {
         toolbar_cancel_save.inflateMenu(R.menu.detail_toolbar)
     }
@@ -149,7 +143,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     @Throws(IOException::class)
-    private fun createImageFile() : File {
+    private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
         val storageDir = this.activity!!.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_",".jpg",storageDir).apply {
@@ -201,7 +195,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         }
     }
 
-    private fun allRequiredParametersAreSet() : Boolean {
+    private fun allRequiredParametersAreSet(): Boolean {
         this.context?.let {context ->
             if (editText_plant_name.text.toString().isEmpty()) {
                 Toast.makeText(context,"Please enter a plant name",Toast.LENGTH_SHORT).show()
@@ -226,7 +220,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     private fun updateWateringReminderElements() {
         if (viewModel.getWateringDate() != null) {
-            textView_next_watering_reminder.text = viewModel.getWateringDate().toString()
+            textView_next_watering_reminder.text = viewModel.getWateringDate()!!.toShortString(true)
             textView_watering_interval.text = viewModel.getReminderIntervalInDays(true)
             if (!timePicker_watering_time.isVisible) {
                 timePicker_watering_time.isVisible = true
@@ -240,7 +234,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     private fun updateFertilizingReminderElements() {
         if (viewModel.getFertilizingDate() != null) {
-            textView_next_fertilizing.text = viewModel.getFertilizingDate().toString()
+            textView_next_fertilizing.text = viewModel.getFertilizingDate()!!.toShortString(true)
             textView_fertilizing_interval.text = viewModel.getReminderIntervalInDays(false)
             if (!timePicker_setup_fertilizing.isVisible) {
                 timePicker_setup_fertilizing.isVisible = true

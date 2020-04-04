@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorPrimary"
-        android:text="Done"
+        android:text="@string/button_done_label"
         android:textColor="#F9F9F9" />
 
     <TextView
         android:id="@+id/textView_reminder_setup_hint"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="25dp"
         android:gravity="center"
         android:lines="1"
-        android:text="1. Select the day you want to be reminded first."
+        android:text="@string/text_view_reminder_setup_step_1"
         android:textColor="@android:color/secondary_text_light"
         android:textSize="14sp" />
 
@@ -42,15 +42,18 @@
                 android:id="@+id/textView_selected_date_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="NEXT WATERING DATE:"
-                android:textColor="@color/colorPrimary" />
+                android:text="@string/text_view_watering_date_header"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textView_fertilizing_interval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="WATERING INTERVAL:"
-                android:textColor="@color/colorPrimary" />
+                android:gravity="end"
+                android:text="@string/text_view_watering_interval_header"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <Space
