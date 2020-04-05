@@ -1,5 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -95,7 +96,9 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
 
     override fun onResume() {
         super.onResume()
+        // TODO: Come up with a better way of refreshing plant list to show user plants need watered
         adapter.notifyDataSetChanged()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
     }
 
     private fun setupRecyclerViewLayout() {

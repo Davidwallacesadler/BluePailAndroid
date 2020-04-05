@@ -2,6 +2,7 @@ package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -14,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
@@ -23,6 +25,7 @@ import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_detail.*
 import com.davidsadler.bluepail.viewModels.PlantCreationViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -91,6 +94,11 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         updateFertilizingReminderElements()
         updatePhotoImageButton()
         checkIfPlantWasSelected()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
     }
 
     private fun inflateBottomToolbar() {

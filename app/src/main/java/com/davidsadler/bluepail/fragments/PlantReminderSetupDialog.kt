@@ -80,11 +80,6 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
         return super.onCreateDialog(savedInstanceState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
-    }
-
     private fun setupCalendarGrid() {
         val today = Date()
         val oneYearInTheFuture = Calendar.getInstance()

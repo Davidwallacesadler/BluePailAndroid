@@ -1,5 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,5 +16,10 @@ class AppSettings : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_app_settings, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
     }
 }

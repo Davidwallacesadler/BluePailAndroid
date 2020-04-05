@@ -10,6 +10,8 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
+import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar,menu)
+        println("OnCreateOptionsMenu called")
         return true
     }
 
@@ -92,40 +95,40 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.plantList -> {
-                    fab_create_plant.isVisible = true
+                    println("Destination changed listener called for plant list")
+                    fab_create_plant.show()
                     toolbar.menu.findItem(R.id.plantListFilterDialog).let {
                         if (it != null) {
                             it.isVisible = true
                         }
-
                     }
                     toolbar.menu.findItem(R.id.appSettings).let {
                         if (it != null) {
                             it.isVisible = true
-                        }
-                    }
-                }
-                R.id.plantDetail -> {
-                    fab_create_plant.isVisible = false
-                    toolbar.menu.findItem(R.id.plantListFilterDialog).let {
-                        if (it != null) {
-                            it.isVisible = false
-                        }
-
-                    }
-                    toolbar.menu.findItem(R.id.appSettings).let {
-                        if (it != null) {
-                            it.isVisible = false
                         }
                     }
                 }
                 R.id.appSettings -> {
-                    fab_create_plant.isVisible = false
+                    println("Destination changed listener called for plant detail or app settings")
+                    fab_create_plant.hide()
                     toolbar.menu.findItem(R.id.plantListFilterDialog).let {
                         if (it != null) {
                             it.isVisible = false
                         }
-
+                    }
+                    toolbar.menu.findItem(R.id.appSettings).let {
+                        if (it != null) {
+                            it.isVisible = false
+                        }
+                    }
+                }
+                R.id.plantDetail -> {
+                    println("Destination changed listener called for plant detail or app settings")
+                    fab_create_plant.hide()
+                    toolbar.menu.findItem(R.id.plantListFilterDialog).let {
+                        if (it != null) {
+                            it.isVisible = false
+                        }
                     }
                     toolbar.menu.findItem(R.id.appSettings).let {
                         if (it != null) {
