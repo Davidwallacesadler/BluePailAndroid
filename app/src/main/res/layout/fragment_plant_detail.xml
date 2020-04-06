@@ -142,7 +142,7 @@
                                         android:id="@+id/textView_next_watering_reminder"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="Select the calendar icon" />
+                                        android:text="@string/text_view_reminder_placeholder" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -238,8 +238,7 @@
                                         android:id="@+id/textView_next_fertilizing"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="Select the calendar icon" />
+                                        android:text="@string/text_view_reminder_placeholder" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -259,8 +258,7 @@
                                     <TextView
                                         android:id="@+id/textView_fertilizing_interval"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1" />
+                                        android:layout_height="wrap_content" />
                                 </LinearLayout>
 
                                 <TimePicker

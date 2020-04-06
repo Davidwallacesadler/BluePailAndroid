@@ -9,7 +9,7 @@ import com.davidsadler.bluepail.model.PlantRepository
 import com.davidsadler.bluepail.model.PlantRoomDatabase
 import kotlinx.coroutines.launch
 
-class PlantViewModel(application: Application) : AndroidViewModel(application) {
+class PlantListViewModel(application: Application) : AndroidViewModel(application) {
 
     // The ViewModel maintains a reference to the repository to get data.
     private val repository: PlantRepository
@@ -25,6 +25,10 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
         ).plantDao()
         repository = PlantRepository(plantsDao)
         allPlants = repository.allPlants
+    }
+
+    fun insert(plant: Plant) = viewModelScope.launch {
+        repository.insert(plant)
     }
 
     fun update(plant: Plant) = viewModelScope.launch {

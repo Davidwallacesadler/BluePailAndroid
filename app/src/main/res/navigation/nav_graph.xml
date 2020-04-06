@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/plantList"
         android:name="com.davidsadler.bluepail.fragments.PlantList"
-        android:label="My Plants"
+        android:label="@string/nav_graph_title_plant_list"
         tools:layout="@layout/fragment_plant_list">
         <action
             android:id="@+id/action_plantList_to_plantListDialog"
@@ -37,19 +37,21 @@
     <fragment
         android:id="@+id/plantDetail"
         android:name="com.davidsadler.bluepail.fragments.PlantDetail"
-        android:label="Create a Plant"
+        android:label="@string/nav_graph_title_plant_detail"
         tools:layout="@layout/fragment_plant_detail">
         <argument
             android:name="plantId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <action
             android:id="@+id/action_plantDetail_to_plantList"
             app:destination="@id/plantList"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/plantList"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <dialog
@@ -65,7 +67,7 @@
     <fragment
         android:id="@+id/appSettings"
         android:name="com.davidsadler.bluepail.fragments.AppSettings"
-        android:label="Settings"
+        android:label="@string/nav_graph_title_app_settings"
         tools:layout="@layout/fragment_app_settings" />
     <dialog
         android:id="@+id/plantListFilterDialog"

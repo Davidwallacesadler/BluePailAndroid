@@ -6,21 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.OnItemClickedListener
 import com.davidsadler.bluepail.adapters.PlantsAdapter
 import com.davidsadler.bluepail.model.Plant
-import com.davidsadler.bluepail.viewModels.PlantViewModel
+import com.davidsadler.bluepail.viewModels.PlantListViewModel
 import com.davidsadler.bluepail.util.AlarmNotificationManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_plant_list.*
 
 
 class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
+
+    private lateinit var viewModel: PlantListViewModel
+    private lateinit var adapter: PlantsAdapter
 
     override fun onPlantUpdated(selectedPlant: Plant, status: PlantUpdateStatus) {
         when (status) {
@@ -33,7 +37,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                         selectedPlant.wateringDate,
                         it)
                     viewModel.update(selectedPlant)
-//                    Toast.makeText(this.context!!,"Plant watering reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                    Snackbar.make(view!!,R.string.snack_bar_watering_confirmation,Snackbar.LENGTH_SHORT).show()
                 }
             }
             PlantUpdateStatus.Fertilize -> {
@@ -45,19 +49,19 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                         selectedPlant.fertilizerDate!!,
                         it)
                     viewModel.update(selectedPlant)
-                    Toast.makeText(this.context!!,"Plant fertilizer reminder re-scheduled",Toast.LENGTH_SHORT).show()
+                    Snackbar.make(view!!,R.string.snack_bar_fertilizing_confirmation,Snackbar.LENGTH_SHORT).show()
                 }
             }
             PlantUpdateStatus.Edit -> {
-                val plantId = selectedPlant.id
-                println("passing Id : $plantId to plant detail fragment")
                 val action = PlantListDirections.actionPlantListToPlantDetail(selectedPlant.id)
-//                val navController = Navigation.findNavController(this.activity!!,R.id.navHostFragment)
-//                navController.navigate(action)
-                this.view?.let {
-                    Navigation.findNavController(it).navigate(action)
-                }
-
+                findNavController().navigate(action)
+//                this.activity?.let {
+//                    val navController = Navigation.findNavController(it,R.id.navHostFragment)
+//                    navController.navigate(action)
+//                }
+//                this.view?.let {
+//                    findNavController().navigate(ac)
+//                }
             }
             PlantUpdateStatus.Delete -> {
                 // TODO: CANCEL NOTIFICATIONS BEFORE DELETION
@@ -67,13 +71,16 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                         AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,false,it)
                     }
                     viewModel.delete(selectedPlant)
+                    Snackbar.make(view!!,R.string.snack_bar_deletion_confirmation,Snackbar.LENGTH_LONG)
+                        .setAction(R.string.snack_bar_undo_action) {
+                            viewModel.insert(selectedPlant)
+                        }.show()
                 }
             }
         }
     }
 
-    private lateinit var viewModel: PlantViewModel
-    private lateinit var adapter: PlantsAdapter
+
 
     override fun onItemClicked(selectedPlant: Plant) {
         val listDetailDialog = PlantListDialog(selectedPlant, this)
@@ -112,7 +119,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
 
     private fun setupViewModel() {
         this.activity?.let {
-            viewModel = ViewModelProvider(it).get(PlantViewModel::class.java)
+            viewModel = ViewModelProvider(it).get(PlantListViewModel::class.java)
         }
     }
 

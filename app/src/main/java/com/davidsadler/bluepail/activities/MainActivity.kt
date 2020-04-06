@@ -9,10 +9,6 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
-import androidx.core.view.isEmpty
-import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -95,7 +91,6 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.plantList -> {
-                    println("Destination changed listener called for plant list")
                     fab_create_plant.show()
                     toolbar.menu.findItem(R.id.plantListFilterDialog).let {
                         if (it != null) {
@@ -109,7 +104,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.appSettings -> {
-                    println("Destination changed listener called for plant detail or app settings")
                     fab_create_plant.hide()
                     toolbar.menu.findItem(R.id.plantListFilterDialog).let {
                         if (it != null) {
@@ -123,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 R.id.plantDetail -> {
-                    println("Destination changed listener called for plant detail or app settings")
                     fab_create_plant.hide()
                     toolbar.menu.findItem(R.id.plantListFilterDialog).let {
                         if (it != null) {

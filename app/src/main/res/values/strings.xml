@@ -17,6 +17,7 @@
     <string name="text_view_plant_fertilizing_reminder_header">Fertilizer Reminder (optional)</string>
     <string name="text_view_next_reminder_date_header">Next:</string>
     <string name="text_view_reminder_interval_header">Interval:</string>
+    <string name="text_view_reminder_placeholder">Select the calendar icon</string>
     <string name="text_view_watering_date_header">Next Watering Date:</string>
     <string name="text_view_watering_interval_header">Watering Interval:</string>
     <string name="text_view_fertilizer_date_header">Next Fertilizing Date:</string>
@@ -36,4 +37,12 @@
     <string name="notification_channel_description">Notifies the user when it is time to water or fertilize their plants</string>
     <string name="toast_reminder_setup_select_future_date">Please select a date later than the first</string>
     <string name="toast_reminder_setup_select_today">Please select a date starting with today</string>
+    <string name="snack_bar_watering_confirmation">Plant watering reminder rescheduled</string>
+    <string name="snack_bar_fertilizing_confirmation">Plant fertilizing reminder rescheduled</string>
+    <string name="snack_bar_deletion_confirmation">Plant deleted</string>
+    <string name="snack_bar_undo_action">UNDO</string>
+    <string name="toolbar_title_edit_your_plant">Edit Your Plant</string>
+    <string name="nav_graph_title_plant_list">My Plants</string>
+    <string name="nav_graph_title_plant_detail">Create a Plant</string>
+    <string name="nav_graph_title_app_settings">Settings</string>
 </resources>

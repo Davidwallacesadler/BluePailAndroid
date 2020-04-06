@@ -1,6 +1,7 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
@@ -88,11 +90,11 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         setupReminderClickListeners()
         setupTimePickers()
         setupPhotoImageButton()
-        updateNameEditText()
-        updateColorRecyclerView()
-        updateWateringReminderElements()
-        updateFertilizingReminderElements()
-        updatePhotoImageButton()
+//        updateNameEditText()
+//        updateColorRecyclerView()
+//        updateWateringReminderElements()
+//        updateFertilizingReminderElements()
+//        updatePhotoImageButton()
         checkIfPlantWasSelected()
     }
 
@@ -189,6 +191,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     private fun navigateToPlantList() {
         this.view?.let {
+            hideKeyboard()
             val action = PlantDetailDirections.actionPlantDetailToPlantList()
             Navigation.findNavController(it).navigate(action)
         }
@@ -208,6 +211,8 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
             if (editText_plant_name.text.toString().isEmpty()) {
                 Toast.makeText(context,"Please enter a plant name",Toast.LENGTH_SHORT).show()
                 return false
+            } else {
+                viewModel.setPlantName(editText_plant_name.text.toString())
             }
             if (viewModel.getWateringDate() == null) {
                 Toast.makeText(context,"Please enter a watering schedule",Toast.LENGTH_SHORT).show()
@@ -271,6 +276,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         if (args.plantId != 0) {
             if (viewModel.getId() == 0) {
                 viewModel.findById(args.plantId).observe(viewLifecycleOwner, androidx.lifecycle.Observer { plant ->
+                    this.activity!!.toolbar.setTitle(R.string.toolbar_title_edit_your_plant)
                     viewModel.setPlantName(plant.name)
                     viewModel.setPlantId(plant.id)
                     viewModel.setColorId(plant.colorId)
@@ -286,6 +292,17 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                     updatePhotoImageButton()
                 })
             }
+        } else {
+            this.activity!!.toolbar.title = "Create a Plant"
         }
     }
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { activity?.hideKeyboard(it) }
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

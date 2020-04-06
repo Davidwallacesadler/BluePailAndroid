@@ -1,6 +1,7 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Dialog
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,26 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.Navigation
-
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.util.getDateAmountOfDaysAway
 import com.davidsadler.bluepail.util.getDateAtDesiredTime
 import com.davidsadler.bluepail.util.getHour
 import com.davidsadler.bluepail.util.getMinute
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_plant_list_dialog.*
 import java.util.*
 
 class PlantListDialog(private val selectedPlant: Plant, private val plantUpdatedListener: PlantUpdatedListener) : DialogFragment() {
 
     private var deleteWasPressed = false
+    private var deleteStatus = "delete_bool"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_plant_list_dialog, container, false)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(deleteStatus,deleteWasPressed)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,11 +43,23 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
         setupFertilizerClickListener()
         setupEditClickListener()
         setupDeleteClickListener()
+        if (savedInstanceState != null) {
+            val deleteStatus = savedInstanceState.getBoolean(deleteStatus)
+            deleteWasPressed = deleteStatus
+            updateDeleteButtonIfNeeded()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         retainInstance = true
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         return super.onCreateDialog(savedInstanceState)
+    }
+
+    private fun updateDeleteButtonIfNeeded() {
+        if (deleteWasPressed) {
+            button_delete_plant.setBackgroundColor(Color.RED)
+        }
     }
 
     private fun setupPlantTitleTextView() {
@@ -86,7 +104,7 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
                 plantUpdatedListener.onPlantUpdated(updatePlant, PlantUpdateStatus.Fertilize)
             } else {
                 this.context?.let {
-                    Toast.makeText(it,"No fertilizer reminders set", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it,"No fertilizer reminders set for this plant", Toast.LENGTH_SHORT).show()
                 }
             }
             this.dismiss()

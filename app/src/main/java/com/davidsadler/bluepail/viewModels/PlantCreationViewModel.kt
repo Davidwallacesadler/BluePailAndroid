@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.model.PlantRepository
 import com.davidsadler.bluepail.model.PlantRoomDatabase
+import com.davidsadler.bluepail.util.AlarmNotificationManager
 import com.davidsadler.bluepail.util.getDateAtDesiredTime
 import kotlinx.coroutines.launch
 import java.util.*
@@ -102,7 +103,6 @@ class PlantCreationViewModel(application: Application) : AndroidViewModel(applic
     }
 
     fun setWateringTime(hour: Int, minute: Int) {
-        println("Setting Waterin time to $hour : $minute")
         this.wateringDate = wateringDate?.getDateAtDesiredTime(hour,minute)
     }
 
