@@ -20,6 +20,9 @@ interface PlantDao {
     @Query("SELECT * FROM plant_table WHERE id = :savedPlantId")
     fun findByID(savedPlantId: Int): LiveData<Plant>
 
+    @Query("SELECT * FROM plant_table WHERE color_id = :colorId")
+    fun filterByColor(colorId: Int): LiveData<List<Plant>>
+
     // UPDATE
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(plant: Plant)

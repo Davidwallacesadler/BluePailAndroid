@@ -90,17 +90,17 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         setupReminderClickListeners()
         setupTimePickers()
         setupPhotoImageButton()
-//        updateNameEditText()
-//        updateColorRecyclerView()
-//        updateWateringReminderElements()
-//        updateFertilizingReminderElements()
-//        updatePhotoImageButton()
         checkIfPlantWasSelected()
     }
 
     override fun onResume() {
         super.onResume()
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
     }
 
     private fun inflateBottomToolbar() {
@@ -200,8 +200,8 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     private fun savePlant() {
         println("Save plant pressed")
         if (allRequiredParametersAreSet()) {
-            // TODO: Setup alarms on save button tapped
             viewModel.savePlant()
+            scheduleAlarmNotifications()
             navigateToPlantList()
         }
     }
@@ -292,8 +292,23 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                     updatePhotoImageButton()
                 })
             }
-        } else {
-            this.activity!!.toolbar.title = "Create a Plant"
+        }
+    }
+
+    private fun scheduleAlarmNotifications() {
+        this.context?.let {
+            AlarmNotificationManager.scheduleNotificationAlarm(viewModel.getName(),
+                viewModel.getId()
+                ,true,
+                viewModel.getWateringDate()!!,
+                it)
+            if (viewModel.getFertilizingDate() != null) {
+                AlarmNotificationManager.scheduleNotificationAlarm(viewModel.getName(),
+                    viewModel.getId(),
+                    false,
+                    viewModel.getFertilizingDate()!!,
+                    it)
+            }
         }
     }
 }

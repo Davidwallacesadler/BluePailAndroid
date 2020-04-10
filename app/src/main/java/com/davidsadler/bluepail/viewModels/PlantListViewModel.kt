@@ -11,14 +11,10 @@ import kotlinx.coroutines.launch
 
 class PlantListViewModel(application: Application) : AndroidViewModel(application) {
 
-    // The ViewModel maintains a reference to the repository to get data.
     private val repository: PlantRepository
-    // LiveData gives us updated words when they change.
     val allPlants: LiveData<List<Plant>>
 
     init {
-        // Gets reference to PlantDao from PlantRoomDatabase to construct
-        // the correct Repository.
         val plantsDao = PlantRoomDatabase.getDatabase(
             application,
             viewModelScope
@@ -37,5 +33,9 @@ class PlantListViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun delete(plant: Plant) {
         repository.delete(plant)
+    }
+
+    fun filterByColor(colorId: Int): LiveData<List<Plant>>{
+        return repository.filterByColor(colorId)
     }
 }

@@ -22,4 +22,9 @@ class AppSettings : Fragment() {
         super.onResume()
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+    }
 }

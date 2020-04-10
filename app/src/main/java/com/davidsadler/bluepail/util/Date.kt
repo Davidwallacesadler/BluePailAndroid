@@ -33,12 +33,12 @@ fun Date.getDaysAwayFromNow(includesTime: Boolean): String {
                 else -> "$absoluteValueDays Days ago"
             }
         }
-    }
-    if (includesTime) {
-        val hourAndMinuteDateFormat = "hh:mm a"
-        val simpleFormatter = SimpleDateFormat(hourAndMinuteDateFormat, Locale.US)
-        val timeString = simpleFormatter.format(this)
-        returnString = returnString.plus(" ($timeString)")
+        if (includesTime) {
+            val hourAndMinuteDateFormat = "hh:mm a"
+            val simpleFormatter = SimpleDateFormat(hourAndMinuteDateFormat, Locale.US)
+            val timeString = simpleFormatter.format(this)
+            returnString = returnString.plus(" ($timeString)")
+        }
     }
     return returnString
 }

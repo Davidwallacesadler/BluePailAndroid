@@ -15,14 +15,13 @@ import com.davidsadler.bluepail.util.getDateAmountOfDaysAway
 import com.davidsadler.bluepail.util.getDateAtDesiredTime
 import com.davidsadler.bluepail.util.getHour
 import com.davidsadler.bluepail.util.getMinute
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_plant_list_dialog.*
 import java.util.*
 
 class PlantListDialog(private val selectedPlant: Plant, private val plantUpdatedListener: PlantUpdatedListener) : DialogFragment() {
 
     private var deleteWasPressed = false
-    private var deleteStatus = "delete_bool"
+    private val deleteStatus = "delete_bool"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +55,11 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
         return super.onCreateDialog(savedInstanceState)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+    }
+
     private fun updateDeleteButtonIfNeeded() {
         if (deleteWasPressed) {
             button_delete_plant.setBackgroundColor(Color.RED)
@@ -72,7 +76,6 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
             val wateringMinute = selectedPlant.wateringDate.getMinute()
             val todayAtCorrectTime = Date().getDateAtDesiredTime(wateringHour,wateringMinute)
             val newWateringFireDate = todayAtCorrectTime.getDateAmountOfDaysAway(selectedPlant.daysBetweenWatering)
-            // TODO: Need to check if there is already an alarm scheduled as well
             val updatePlant = Plant(selectedPlant.id,
                 selectedPlant.name,
                 selectedPlant.colorId,

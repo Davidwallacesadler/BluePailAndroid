@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
@@ -34,6 +36,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
         val iconImageView: ImageView = itemView.imageView_plant_photo
         val waterIconImageView: ImageView = itemView.imageView_plant_watered_status
         val fertilizerIconImageView: ImageView = itemView.imageView_plant_fertilized_status
+        val fertilizerLayout: LinearLayout = itemView.linearLayout_fertilizer
         fun bind(plant: Plant, clickListener: OnItemClickedListener) {
             itemView.setOnClickListener{
                 clickListener.onItemClicked(plant)
@@ -69,6 +72,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
             holder.waterIconImageView.clearColorFilter()
         }
         if (plant.fertilizerDate != null) {
+            holder.fertilizerLayout.isVisible = true
             holder.nextFertilizingLabel.text = plant.fertilizerDate.getDaysAwayFromNow(true)
             if (plant.fertilizerDate <= Date()) {
                 holder.fertilizerIconImageView.setColorFilter(Color.RED)
@@ -76,7 +80,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
                 holder.fertilizerIconImageView.clearColorFilter()
             }
         } else {
-            holder.nextFertilizingLabel.text = "N/A"
+            holder.fertilizerLayout.isVisible = false
         }
     }
 

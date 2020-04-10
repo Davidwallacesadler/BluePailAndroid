@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.model.PlantRepository
 import com.davidsadler.bluepail.model.PlantRoomDatabase
-import com.davidsadler.bluepail.util.AlarmNotificationManager
 import com.davidsadler.bluepail.util.getDateAtDesiredTime
 import kotlinx.coroutines.launch
 import java.util.*

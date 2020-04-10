@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.davidsadler.bluepail.R
+import com.davidsadler.bluepail.fragments.PlantList
 import com.davidsadler.bluepail.fragments.PlantListDirections
 import com.davidsadler.bluepail.util.NOTIFICATION_CHANNEL_DESCRIPTION
 import com.davidsadler.bluepail.util.NOTIFICATION_CHANNEL_ID
@@ -56,18 +57,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar,menu)
-        println("OnCreateOptionsMenu called")
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.title == "appSettings") {
-            val action = PlantListDirections.actionPlantListToAppSettings()
-            navController.navigate(action)
-            true
-        } else {
-            val navigated = NavigationUI.onNavDestinationSelected(item,navController)
-            navigated || super.onOptionsItemSelected(item)
+        return when (item.title) {
+            getString(R.string.menu_item_settings) -> {
+                val action = PlantListDirections.actionPlantListToAppSettings()
+                navController.navigate(action)
+                true
+            }
+            else -> {
+                val navigated = NavigationUI.onNavDestinationSelected(item,navController)
+                navigated || super.onOptionsItemSelected(item)
+            }
         }
     }
 

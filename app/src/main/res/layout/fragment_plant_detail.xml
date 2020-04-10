@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EBEDE2"
     tools:context=".fragments.PlantDetail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,6 +33,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -43,7 +45,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp">
 
                     <EditText
                         android:id="@+id/editText_plant_name"
@@ -53,7 +56,7 @@
                         android:ems="10"
                         android:hint="@string/edit_text_plant_title_hint"
                         android:imeOptions="actionDone"
-                        android:inputType="textCapWords"/>
+                        android:inputType="textCapWords" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -69,7 +72,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView_plant_colors"
@@ -94,7 +98,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -194,7 +199,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="@color/colorPrimary"
+                            android:background="#C5C5C5"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp" />
 
@@ -299,8 +304,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp">
 
                     <ImageButton
                         android:id="@+id/imageButton_plant_photo"
@@ -308,6 +314,7 @@
                         android:layout_height="wrap_content"
                         android:background="#FFFFFF"
                         android:contentDescription="@string/image_button_plant_photo"
+                        android:padding="16dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/image_button_photo" />
 

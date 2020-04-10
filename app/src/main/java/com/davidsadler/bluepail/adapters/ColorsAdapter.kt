@@ -1,7 +1,6 @@
 package com.davidsadler.bluepail.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +16,14 @@ interface OnColorSelectedListener {
     fun colorSelected(colorId: Int)
 }
 
-class ColorsAdapter internal constructor(val context: Context, val colorSelectedListener: OnColorSelectedListener) : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
+class ColorsAdapter internal constructor(val context: Context,private val colorSelectedListener: OnColorSelectedListener) : RecyclerView.Adapter<ColorsAdapter.ColorViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
     // Default color is red:
     var selectedColor = ContextCompat.getColor(context,R.color.colorGroupRed)
 
-    private val mocColors = listOf<Int>(
+    // TODO: decouple the data source from the adapter
+    private var colors = listOf(
         R.color.colorGroupRed,
         R.color.colorGroupOrange,
         R.color.colorGroupYellow,
@@ -45,11 +45,11 @@ class ColorsAdapter internal constructor(val context: Context, val colorSelected
     }
 
     override fun getItemCount(): Int {
-       return mocColors.count()
+       return colors.count()
     }
 
     override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
-        val colorId = mocColors[position]
+        val colorId = colors[position]
         val color = ContextCompat.getColor(context,colorId)
         holder.colorBackground.setCardBackgroundColor(color)
         holder.selectedOverlay.isVisible = color != selectedColor
@@ -59,5 +59,10 @@ class ColorsAdapter internal constructor(val context: Context, val colorSelected
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
         val cellForRow = inflater.inflate(R.layout.item_color_list_cell, parent, false)
         return ColorViewHolder(cellForRow)
+    }
+
+    fun setColors(colorList: List<Int>) {
+        colors = colorList
+        notifyDataSetChanged()
     }
 }

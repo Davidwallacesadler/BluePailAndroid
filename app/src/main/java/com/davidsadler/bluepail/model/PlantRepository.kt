@@ -15,6 +15,8 @@ class PlantRepository(private val plantDao: PlantDao) {
 
     fun findById(plantId: Int) = plantDao.findByID(plantId)
 
+    fun filterByColor(colorId: Int) = plantDao.filterByColor(colorId)
+
     fun update(plant: Plant) = plantDao.update(plant)
 
     fun delete(plant: Plant) = plantDao.delete(plant)
