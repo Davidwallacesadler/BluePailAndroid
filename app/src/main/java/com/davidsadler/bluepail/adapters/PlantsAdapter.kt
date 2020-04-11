@@ -1,7 +1,6 @@
 package com.davidsadler.bluepail.adapters
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater

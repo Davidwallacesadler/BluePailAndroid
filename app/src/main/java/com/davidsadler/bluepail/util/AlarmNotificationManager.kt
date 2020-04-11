@@ -6,53 +6,51 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
+import com.davidsadler.bluepail.R
 import java.util.*
 
-class AlarmNotificationManager {
+object AlarmNotificationManager {
 
-    companion object {
-        // Schedule:
-        fun scheduleNotificationAlarm(plantName: String,
-                                      plantId: Int,
-                                      isWateringNotification: Boolean,
-                                      fireDate: Date,
-                                      context: Context) {
-            val receiver = ComponentName(context, AlarmReceiver::class.java)
-            context.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
-            val intent = Intent(context, AlarmReceiver::class.java)
-            intent.putExtra(EXTRA_NOTIFICATION_PLANT_NAME, plantName)
-            intent.putExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL,isWateringNotification)
-            intent.putExtra(EXTRA_NOTIFICATION_PLANT_ID, plantId)
-            val dataURI = Uri.parse("$plantId/$isWateringNotification")
-            intent.data = dataURI
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val pendingIntent = if (isWateringNotification) {
-                PendingIntent.getBroadcast(context,plantId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-            } else {
-                //TODO: FIGURE OUT A BETTER WAY OF DIFFERENTIATING FERTILIZER AND WATERING PENDING INTENTS
-                PendingIntent.getBroadcast(context,plantId + 1000,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-            }
-            println("Scheduling alarm for $plantName")
-            alarmManager.set(AlarmManager.RTC_WAKEUP, fireDate.timeInMillis(), pendingIntent)
+    private fun createPendingIntent(context: Context,
+                                    plantName: String,
+                                    plantId: Int,
+                                    isWateringNotification: Boolean): PendingIntent? {
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            action = context.getString(R.string.notification_action_plant_reminder)
+            type = "$plantName-$plantId-$isWateringNotification"
+            putExtra(EXTRA_NOTIFICATION_PLANT_NAME, plantName)
+            putExtra(EXTRA_NOTIFICATION_PLANT_ID, plantId)
+            putExtra(EXTRA_NOTIFICATION_IS_FOR_WATERING_BOOL, isWateringNotification)
         }
+        return if (isWateringNotification) {
+            PendingIntent.getBroadcast(context,plantId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+        } else {
+            PendingIntent.getBroadcast(context,plantId + 1000, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+    }
 
-        // Cancel:
-        fun cancelNotificationAlarm(plantId: Int,
-                               isWateringNotification: Boolean,
-                               context: Context) {
-            val intent = Intent(context, AlarmReceiver::class.java)
-            val dataUri = Uri.parse("$plantId/$isWateringNotification")
-            intent.data = dataUri
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val pendingIntent = if (isWateringNotification) {
-                PendingIntent.getBroadcast(context,plantId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-            } else {
-                //TODO: FIGURE OUT A BETTER WAY OF DIFFERENTIATING FERTILIZER AND WATERING PENDING INTENTS
-                PendingIntent.getBroadcast(context,plantId + 1000,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-            }
-            println("Canceling alarm for plant id: $plantId")
-            alarmManager.cancel(pendingIntent)
-        }
+    fun scheduleNotificationAlarm(plantName: String,
+                                  plantId: Int,
+                                  isWateringNotification: Boolean,
+                                  fireDate: Date,
+                                  context: Context) {
+        val receiver = ComponentName(context, AlarmReceiver::class.java)
+        context.packageManager.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = createPendingIntent(context,plantName,plantId,isWateringNotification)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, fireDate.timeInMillis(), alarmIntent)
+        println("Scheduling alarm for $plantName")
+    }
+
+
+        //TODO: TEST CANCELING OF ALARM
+    fun cancelNotificationAlarm(plantId: Int,
+                                plantName: String,
+                                isWateringNotification: Boolean,
+                                context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = createPendingIntent(context,plantName,plantId,isWateringNotification)
+        alarmManager.cancel(alarmIntent)
+        println("Canceling alarm for $plantName")
     }
 }

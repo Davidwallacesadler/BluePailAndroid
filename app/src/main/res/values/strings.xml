@@ -35,6 +35,7 @@
     <string name="button_plant_delete">Delete</string>
     <string name="notification_channel_name">notifyBluePail</string>
     <string name="notification_channel_description">Notifies the user when it is time to water or fertilize their plants</string>
+    <string name="notification_action_plant_reminder">com.davidsadler.bluepail.action.PLANT_REMINDER</string>
     <string name="toast_reminder_setup_select_future_date">Please select a date later than the first</string>
     <string name="toast_reminder_setup_select_today">Please select a date starting with today</string>
     <string name="snack_bar_watering_confirmation">Plant watering reminder rescheduled</string>

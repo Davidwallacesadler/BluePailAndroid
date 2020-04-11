@@ -91,11 +91,11 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     override fun onResume() {
         super.onResume()
         // TODO: Come up with a better way of refreshing plant list to show user plants need watered
-        adapter.notifyDataSetChanged()
-        if (args.colorToFilter != 0) {
-            observeFilterPlants()
-        } else {
-            observeAllPlants()
+        if (args.colorToFilter != 1) {
+            when (args.colorToFilter) {
+                0 -> observeAllPlants()
+                else -> observeFilterPlants()
+            }
         }
     }
 
@@ -129,9 +129,15 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
 
     private fun cancelAlarmNotification(selectedPlant: Plant) {
         this.context?.let {
-            AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,true,it)
+            AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,
+                selectedPlant.name,
+                true,
+                it)
             if (selectedPlant.fertilizerDate != null) {
-                AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,false,it)
+                AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,
+                    selectedPlant.name,
+                    false,
+                    it)
             }
         }
     }

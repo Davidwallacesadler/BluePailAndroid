@@ -24,6 +24,10 @@ class PlantListFilterDialog : DialogFragment(), OnColorSelectedListener {
 
     override fun colorSelected(colorId: Int) {
         viewModel.updateSelectedColor(colorId)
+//        button_filter_by_color.text = when(colorId) {
+//            R.color.colorGroupBlue ->
+//        }
+        button_filter_by_color.text = getString(R.string.menu_item_filter)
     }
 
     override fun onCreateView(
