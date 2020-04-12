@@ -17,6 +17,7 @@ import com.davidsadler.bluepail.model.Plant
 import com.davidsadler.bluepail.viewModels.PlantListViewModel
 import com.davidsadler.bluepail.util.AlarmNotificationManager
 import com.davidsadler.bluepail.util.MarginItemDecorator
+import com.davidsadler.bluepail.util.RecyclerViewLayoutType
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_plant_list.*
 
@@ -105,7 +106,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
             val plantsListAdapter = PlantsAdapter(context,this)
             recyclerView_plant_list.adapter = plantsListAdapter
             adapter = plantsListAdapter
-            recyclerView_plant_list.addItemDecoration(MarginItemDecorator(32))
+            recyclerView_plant_list.addItemDecoration(MarginItemDecorator(32, RecyclerViewLayoutType.GRID))
         }
     }
 
