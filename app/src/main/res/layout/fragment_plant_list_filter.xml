@@ -17,5 +17,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycer_view_color_filter"
         android:layout_width="match_parent"
-        android:layout_height="75dp" />
+        android:layout_height="75dp"
+        android:background="@color/colorListItemBackground" />
 </LinearLayout>

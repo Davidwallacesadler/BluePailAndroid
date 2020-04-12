@@ -9,13 +9,18 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
+import com.davidsadler.bluepail.activities.MainActivity
 import kotlinx.android.synthetic.main.item_image_and_text_cell.view.*
 import kotlinx.android.synthetic.main.item_switch_cell.view.*
 
 class SettingsAdapter(val context: Context, private val switchListener: OnSwitchToggledListener, private val cellTappedListener: OnSettingsCellClickedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private val settingTitles = listOf("Dark Mode", "Provide Feedback", "Rate and Review")
+    private val settingTitles = listOf("Dark Mode", "Rate and Review", "Share")
+    private val settingIcons = listOf(R.drawable.image_view_dark_mode_icon,
+        R.drawable.image_view_rate_review_icon,
+        R.drawable.image_view_share_icon)
+    var isDarkModeEnabled = false
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) {
@@ -43,10 +48,13 @@ class SettingsAdapter(val context: Context, private val switchListener: OnSwitch
         if (getItemViewType(position) == SettingsCellType.SWITCH.rawValue) {
             val switchCellHolder = holder as SwitchCellViewHolder
             switchCellHolder.primarySwitch.text = settingTitles[position]
+            switchCellHolder.primarySwitch.isChecked = isDarkModeEnabled
+            switchCellHolder.iconImageView.setImageResource(settingIcons[position])
             switchCellHolder.bind(position, switchListener)
         } else {
             val textCellHolder = holder as TextCellViewHolder
             textCellHolder.primaryTextView.text = settingTitles[position]
+            textCellHolder.iconImageView.setImageResource(settingIcons[position])
             textCellHolder.bind(position, cellTappedListener)
         }
     }

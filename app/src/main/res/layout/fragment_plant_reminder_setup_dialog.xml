@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorListItemBackground"
     android:gravity="center|top"
     android:orientation="vertical"
     tools:context=".fragments.PlantReminderSetupDialog">
@@ -22,7 +23,7 @@
         android:gravity="center"
         android:lines="1"
         android:text="@string/text_view_reminder_setup_step_1"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -70,19 +71,22 @@
                 android:id="@+id/textView_firstDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_view_reminder_next_reminder_placeholder" />
+                android:text="@string/text_view_reminder_next_reminder_placeholder"
+                android:textColor="@color/colorSecondaryText" />
 
             <TextView
                 android:id="@+id/textView_interval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/text_view_reminder_interval_placeholder" />
+                android:text="@string/text_view_reminder_interval_placeholder"
+                android:textColor="@color/colorSecondaryText" />
         </LinearLayout>
     </LinearLayout>
 
     <com.squareup.timessquare.CalendarPickerView
         android:id="@+id/calendarView_reminder_setup"
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="250dp"
+        android:background="#00FFFFFF" />
 
 </LinearLayout>

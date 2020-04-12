@@ -1,5 +1,7 @@
 package com.davidsadler.bluepail.fragments
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
+import com.davidsadler.bluepail.activities.DarkModeConfig
+import com.davidsadler.bluepail.activities.MainActivity
 import com.davidsadler.bluepail.adapters.OnItemClickedListener
 import com.davidsadler.bluepail.adapters.PlantsAdapter
 import com.davidsadler.bluepail.model.Plant
@@ -18,6 +22,7 @@ import com.davidsadler.bluepail.viewModels.PlantListViewModel
 import com.davidsadler.bluepail.util.AlarmNotificationManager
 import com.davidsadler.bluepail.util.MarginItemDecorator
 import com.davidsadler.bluepail.util.RecyclerViewLayoutType
+import com.davidsadler.bluepail.util.SHARED_PREF_DARK_MODE_BOOL
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_plant_list.*
 
@@ -85,6 +90,11 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPrefs = activity!!.getPreferences(Context.MODE_PRIVATE)
+        if (sharedPrefs.getBoolean(SHARED_PREF_DARK_MODE_BOOL, false)) {
+            println("DARK MODE BOOL WAS TRUE")
+            recyclerView_plant_list.setBackgroundColor(Color.BLACK)
+        }
         setupRecyclerViewLayout()
         observeAllPlants()
     }

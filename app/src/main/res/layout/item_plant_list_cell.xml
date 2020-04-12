@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:clipChildren="true"
-        app:cardBackgroundColor="#E5EAED"
+        app:cardBackgroundColor="@color/colorListItemBackground"
         app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,9 +31,8 @@
                 android:id="@+id/textView_plant_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
                 android:gravity="center"
-                android:textColor="#131313"
+                android:textColor="@color/colorPrimaryText"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +58,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="#B0FFFFFF"
+                app:cardBackgroundColor="@color/colorListItemBackgroundSemiTransparent"
                 app:cardCornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:text="10 Days"
-                            android:textColor="#131313"
+                            android:textColor="@color/colorPrimaryText"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -126,7 +125,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:text="Tomorrow (10:00 AM)"
-                            android:textColor="#131313"
+                            android:textColor="@color/colorPrimaryText"
                             android:textSize="12sp" />
                     </LinearLayout>
 

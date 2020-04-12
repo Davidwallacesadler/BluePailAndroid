@@ -68,7 +68,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
         if (plant.wateringDate <= Date()) {
             holder.waterIconImageView.setColorFilter(Color.RED)
         } else {
-            holder.waterIconImageView.clearColorFilter()
+            holder.waterIconImageView.setColorFilter(Color.BLUE)
         }
         if (plant.fertilizerDate != null) {
             holder.fertilizerLayout.isVisible = true
@@ -76,7 +76,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
             if (plant.fertilizerDate <= Date()) {
                 holder.fertilizerIconImageView.setColorFilter(Color.RED)
             } else {
-                holder.fertilizerIconImageView.clearColorFilter()
+                holder.fertilizerIconImageView.setColorFilter(Color.argb(1,25/255,255/255,50/255))
             }
         } else {
             holder.fertilizerLayout.isVisible = false

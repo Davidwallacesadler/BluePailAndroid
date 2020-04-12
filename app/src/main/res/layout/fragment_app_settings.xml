@@ -5,4 +5,5 @@
     android:id="@+id/recyclerView_app_settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorListBackground"
     tools:context=".fragments.AppSettings" />

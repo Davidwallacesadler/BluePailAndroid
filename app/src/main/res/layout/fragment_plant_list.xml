@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEDE2"
     android:gravity="end"
     android:orientation="vertical"
     tools:context=".fragments.PlantList">
@@ -12,7 +11,7 @@
         android:id="@+id/recyclerView_plant_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#EBEDE2">
+        android:background="@color/colorListBackground">
 
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

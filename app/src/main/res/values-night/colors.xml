@@ -13,9 +13,9 @@
     <color name="colorGroupMagenta">#D81B51</color>
     <color name="colorDelete">#FF0000</color>
     <color name="colorEdit">#7F8186</color>
-    <color name="colorListBackground">#EDEDED</color>
-    <color name="colorListItemBackground">#FDFDFD</color>
-    <color name="colorListItemBackgroundSemiTransparent">#BFFDFDFD</color>
-    <color name="colorPrimaryText">#131313</color>
-    <color name="colorSecondaryText">#686868</color>
+    <color name="colorListBackground">#050505</color>
+    <color name="colorListItemBackground">#2C2C2C</color>
+    <color name="colorListItemBackgroundSemiTransparent">#BF171717</color>
+    <color name="colorPrimaryText">#F8F8F8</color>
+    <color name="colorSecondaryText">#999999</color>
 </resources>

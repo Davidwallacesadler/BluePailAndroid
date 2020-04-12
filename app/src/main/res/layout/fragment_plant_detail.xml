@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EBEDE2"
+    android:background="@color/colorListBackground"
     tools:context=".fragments.PlantDetail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_cancel_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -41,11 +41,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_view_plant_title_header"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimaryText" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorListItemBackground"
                     app:cardCornerRadius="5dp">
 
                     <EditText
@@ -56,7 +58,9 @@
                         android:ems="10"
                         android:hint="@string/edit_text_plant_title_hint"
                         android:imeOptions="actionDone"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textColorHint="@color/colorSecondaryText"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -68,11 +72,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_view_plant_color_header"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimaryText" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorListItemBackground"
                     app:cardCornerRadius="5dp">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -94,11 +100,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_view_plant_reminder_header"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimaryText" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorListItemBackground"
                     app:cardCornerRadius="5dp">
 
                     <LinearLayout
@@ -137,6 +145,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_next_reminder_date_header" />
 
                                     <Space
@@ -147,6 +156,7 @@
                                         android:id="@+id/textView_next_watering_reminder"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_reminder_placeholder" />
                                 </LinearLayout>
 
@@ -158,6 +168,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_reminder_interval_header" />
 
                                     <Space
@@ -166,12 +177,16 @@
 
                                     <TextView
                                         android:id="@+id/textView_watering_interval"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content" />
                                 </LinearLayout>
 
                                 <TimePicker
                                     android:id="@+id/timePicker_watering_time"
+                                    android:numbersTextColor="@color/colorSecondaryText"
+                                    android:amPmTextColor="@color/colorSecondaryText"
+                                    android:numbersSelectorColor="@color/colorSecondaryText"
                                     android:layout_width="378dp"
                                     android:layout_height="wrap_content"
                                     android:focusable="true"
@@ -183,9 +198,10 @@
 
                             <ImageButton
                                 android:id="@+id/imageButton_setup_watering"
+                                android:tint="@color/colorPrimary"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:background="#F9F9F9"
+                                android:background="@color/colorListItemBackground"
                                 android:contentDescription="@string/image_button_watering_setup"
                                 android:focusable="true"
                                 android:scaleType="fitCenter"
@@ -199,13 +215,13 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:background="#C5C5C5"
+                            android:background="@color/colorSecondaryText"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp" />
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="10dp" />
+                            android:layout_height="20dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -233,6 +249,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_next_reminder_date_header" />
 
                                     <Space
@@ -243,6 +260,7 @@
                                         android:id="@+id/textView_next_fertilizing"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_reminder_placeholder" />
                                 </LinearLayout>
 
@@ -254,6 +272,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:text="@string/text_view_reminder_interval_header" />
 
                                     <Space
@@ -262,6 +281,7 @@
 
                                     <TextView
                                         android:id="@+id/textView_fertilizing_interval"
+                                        android:textColor="@color/colorSecondaryText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content" />
                                 </LinearLayout>
@@ -269,6 +289,8 @@
                                 <TimePicker
                                     android:id="@+id/timePicker_setup_fertilizing"
                                     android:layout_width="381dp"
+                                    android:numbersTextColor="@color/colorSecondaryText"
+                                    android:amPmTextColor="@color/colorSecondaryText"
                                     android:layout_height="wrap_content"
                                     android:focusable="true"
                                     android:timePickerMode="spinner"
@@ -279,10 +301,11 @@
 
                             <ImageButton
                                 android:id="@+id/imageButton_setup_fertilizing"
+                                android:tint="@color/fertilizerGreen"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_weight="0"
-                                android:background="#F9F9F9"
+                                android:background="@color/colorListItemBackground"
                                 android:contentDescription="@string/image_button_fertilizing_setup"
                                 android:focusable="false"
                                 android:scaleType="fitCenter"
@@ -301,18 +324,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_view_plant_photo_header"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/colorPrimaryText" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:cardBackgroundColor="@color/colorListItemBackground"
                     app:cardCornerRadius="8dp">
 
                     <ImageButton
                         android:id="@+id/imageButton_plant_photo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
+                        android:background="@color/colorListItemBackground"
                         android:contentDescription="@string/image_button_plant_photo"
                         android:padding="16dp"
                         android:scaleType="fitCenter"

@@ -29,7 +29,6 @@ class MarginItemDecorator(private val spaceHeight: Int, private val recyclerView
                     right = spaceHeight
                 }
             }
-
         }
     }
 }
