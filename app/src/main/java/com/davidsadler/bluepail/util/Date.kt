@@ -18,7 +18,7 @@ fun Date.getDaysAwayFromNow(includesTime: Boolean): String {
             1 -> "1 Week"
             else -> "$weekCount Weeks"
         }
-        if (daysBetweenDate > 0) {
+        if (daysIntoCurrentWeek > 0) {
             returnString = returnString.plus(when (daysBetweenDate) {1 -> ", 1 Day" else -> ", $daysIntoCurrentWeek Days" })
         }
     } else {

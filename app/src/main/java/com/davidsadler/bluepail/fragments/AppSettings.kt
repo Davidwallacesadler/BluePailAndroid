@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
@@ -55,6 +56,8 @@ class AppSettings : Fragment(), OnSwitchToggledListener, OnSettingsCellClickedLi
                     commit()
                 }
                 Snackbar.make(this.view!!,snackbarMessage,Snackbar.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+                findNavController().navigate(R.id.appSettings)
             }
         }
     }
