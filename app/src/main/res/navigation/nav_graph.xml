@@ -84,4 +84,15 @@
             app:popUpTo="@id/plantList"
             app:popUpToInclusive="true" />
     </dialog>
+    <fragment
+        android:id="@+id/onboarding"
+        android:name="com.davidsadler.bluepail.fragments.Onboarding"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboarding_to_plantList"
+            app:destination="@id/plantList"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/plantList"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

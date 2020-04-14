@@ -8,3 +8,4 @@ const val NOTIFICATION_CHANNEL_ID = "notifyBluePail"
 const val NOTIFICATION_CHANNEL_DESCRIPTION = "Notifies the user when it is time to water or fertilize their plants"
 const val REQUEST_IMAGE_CAPTURE = 1
 const val SHARED_PREF_DARK_MODE_BOOL = "com.davidsadler.bluepail.DARK_MODE_PREFERENCE"
+const val SHARED_PREF_ONBOARDING_BOOL = "com.davidsadler.bluepail.ONBOARDING_PREFERENCE"

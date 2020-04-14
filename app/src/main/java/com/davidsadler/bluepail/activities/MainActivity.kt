@@ -7,6 +7,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         initializeNavController()
         setupActionBar(navController)
         setupFab()
+        checkOnboardingStatus()
         NotificationHelper.createNotificationChannel(this)
     }
 
@@ -90,43 +92,16 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.plantList -> {
-                    fab_create_plant.show()
-                    toolbar.menu.findItem(R.id.plantListFilterDialog).let {
-                        if (it != null) {
-                            it.isVisible = true
-                        }
-                    }
-                    toolbar.menu.findItem(R.id.appSettings).let {
-                        if (it != null) {
-                            it.isVisible = true
-                        }
-                    }
+                    showFabAndActionBarItems()
                 }
                 R.id.appSettings -> {
-                    fab_create_plant.hide()
-                    toolbar.menu.findItem(R.id.plantListFilterDialog).let {
-                        if (it != null) {
-                            it.isVisible = false
-                        }
-                    }
-                    toolbar.menu.findItem(R.id.appSettings).let {
-                        if (it != null) {
-                            it.isVisible = false
-                        }
-                    }
+                    hideFabAndActionBarItems()
                 }
                 R.id.plantDetail -> {
-                    fab_create_plant.hide()
-                    toolbar.menu.findItem(R.id.plantListFilterDialog).let {
-                        if (it != null) {
-                            it.isVisible = false
-                        }
-                    }
-                    toolbar.menu.findItem(R.id.appSettings).let {
-                        if (it != null) {
-                            it.isVisible = false
-                        }
-                    }
+                    hideFabAndActionBarItems()
+                }
+                R.id.onboarding -> {
+                    hideFabAndActionBar()
                 }
             }
         }
@@ -145,6 +120,50 @@ class MainActivity : AppCompatActivity() {
         val isDarkModeEnabled = sharedPref.getBoolean(SHARED_PREF_DARK_MODE_BOOL,false)
         if (isDarkModeEnabled) {
             shouldEnableDarkMode(DarkModeConfig.YES)
+        }
+    }
+
+    private fun checkOnboardingStatus() {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val onboardingPresented = sharedPref.getBoolean(SHARED_PREF_ONBOARDING_BOOL, false)
+        if (!onboardingPresented) {
+            navController.navigate(R.id.onboarding)
+        }
+    }
+
+    private fun hideFabAndActionBarItems() {
+        fab_create_plant.hide()
+        toolbar.menu.findItem(R.id.plantListFilterDialog).let {
+            if (it != null) {
+                it.isVisible = false
+            }
+        }
+        toolbar.menu.findItem(R.id.appSettings).let {
+            if (it != null) {
+                it.isVisible = false
+            }
+        }
+    }
+
+    private fun hideFabAndActionBar() {
+        fab_create_plant.hide()
+        toolbar.isVisible = false
+    }
+
+    private fun showFabAndActionBarItems() {
+        fab_create_plant.show()
+        if (!toolbar.isVisible) {
+            toolbar.isVisible = true
+        }
+        toolbar.menu.findItem(R.id.plantListFilterDialog).let {
+            if (it != null) {
+                it.isVisible = true
+            }
+        }
+        toolbar.menu.findItem(R.id.appSettings).let {
+            if (it != null) {
+                it.isVisible = true
+            }
         }
     }
 }
