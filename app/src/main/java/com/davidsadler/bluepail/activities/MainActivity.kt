@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun shouldEnableDarkMode(darkModeConfig: DarkModeConfig) {
-        when(darkModeConfig){
+        when (darkModeConfig) {
             DarkModeConfig.YES -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             DarkModeConfig.NO -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 //            DarkModeConfig.FOLLOW_SYSTEM -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

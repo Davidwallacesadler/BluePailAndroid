@@ -9,7 +9,6 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
-import com.davidsadler.bluepail.activities.MainActivity
 import kotlinx.android.synthetic.main.item_image_and_text_cell.view.*
 import kotlinx.android.synthetic.main.item_switch_cell.view.*
 

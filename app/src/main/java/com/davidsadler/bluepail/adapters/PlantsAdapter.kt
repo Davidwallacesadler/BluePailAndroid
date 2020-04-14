@@ -13,7 +13,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
+import com.davidsadler.bluepail.util.dryRed
+import com.davidsadler.bluepail.util.fertilizerGreen
 import com.davidsadler.bluepail.util.getDaysAwayFromNow
+import com.davidsadler.bluepail.util.wateredBlue
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_plant_list_cell.view.*
 import java.util.*
@@ -28,17 +31,51 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
     private var plants = emptyList<Plant>()
 
     inner class PlantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val colorImageView: ImageView = itemView.imageView_plant_color
-        val titleLabel: TextView = itemView.textView_plant_title
-        val nextWateringLabel: TextView = itemView.textView_plant_water_date
-        val nextFertilizingLabel: TextView = itemView.textView_plant_fertilize_date
-        val iconImageView: ImageView = itemView.imageView_plant_photo
-        val waterIconImageView: ImageView = itemView.imageView_plant_watered_status
-        val fertilizerIconImageView: ImageView = itemView.imageView_plant_fertilized_status
-        val fertilizerLayout: LinearLayout = itemView.linearLayout_fertilizer
-        fun bind(plant: Plant, clickListener: OnItemClickedListener) {
+        private val colorImageView: ImageView = itemView.imageView_plant_color
+        private val titleLabel: TextView = itemView.textView_plant_title
+        private val nextWateringLabel: TextView = itemView.textView_plant_water_date
+        private val nextFertilizingLabel: TextView = itemView.textView_plant_fertilize_date
+        private val iconImageView: ImageView = itemView.imageView_plant_photo
+        private val waterIconImageView: ImageView = itemView.imageView_plant_watered_status
+        private val fertilizerIconImageView: ImageView = itemView.imageView_plant_fertilized_status
+        private val fertilizerLayout: LinearLayout = itemView.linearLayout_fertilizer
+        private fun bind(plant: Plant, clickListener: OnItemClickedListener) {
             itemView.setOnClickListener{
                 clickListener.onItemClicked(plant)
+            }
+        }
+        fun setupCellWithPlant(plant: Plant) {
+            bind(plant,itemClickedListener)
+            titleLabel.text = plant.name
+            colorImageView.setBackgroundColor(plant.colorId)
+            if (plant.photo != null) {
+                val picasso = Picasso.get()
+                val photoString = plant.photo
+                val photoUri = Uri.parse("file://$photoString")
+                picasso
+                    .load(photoUri).resize(150,150)
+                    .placeholder(R.drawable.item_view_default_plant_photo)
+                    .error(R.drawable.fab_plus)
+                    .into(iconImageView)
+            } else {
+                iconImageView.setImageResource(R.drawable.item_view_default_plant_photo)
+            }
+            nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
+            if (plant.wateringDate <= Date()) {
+                waterIconImageView.setColorFilter(Color().dryRed())
+            } else {
+                waterIconImageView.setColorFilter(Color().wateredBlue())
+            }
+            if (plant.fertilizerDate != null) {
+                fertilizerLayout.isVisible = true
+                nextFertilizingLabel.text = plant.fertilizerDate.getDaysAwayFromNow(true)
+                if (plant.fertilizerDate <= Date()) {
+                    fertilizerIconImageView.setColorFilter(Color().dryRed())
+                } else {
+                    fertilizerIconImageView.setColorFilter(Color().fertilizerGreen())
+                }
+            } else {
+                fertilizerLayout.isVisible = false
             }
         }
     }
@@ -49,38 +86,7 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
 
     override fun onBindViewHolder(holder: PlantViewHolder, position: Int) {
         val plant = plants[position]
-        holder.bind(plant,itemClickedListener)
-        holder.titleLabel.text = plant.name
-        holder.colorImageView.setBackgroundColor(plant.colorId)
-        if (plant.photo != null) {
-            val picasso = Picasso.get()
-            val photoString = plant.photo
-            val photoUri = Uri.parse("file://$photoString")
-            picasso
-                .load(photoUri).resize(150,150)
-                .placeholder(R.drawable.item_view_default_plant_photo)
-                .error(R.drawable.fab_plus)
-                .into(holder.iconImageView)
-        } else {
-            holder.iconImageView.setImageResource(R.drawable.item_view_default_plant_photo)
-        }
-        holder.nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
-        if (plant.wateringDate <= Date()) {
-            holder.waterIconImageView.setColorFilter(Color.RED)
-        } else {
-            holder.waterIconImageView.setColorFilter(Color.BLUE)
-        }
-        if (plant.fertilizerDate != null) {
-            holder.fertilizerLayout.isVisible = true
-            holder.nextFertilizingLabel.text = plant.fertilizerDate.getDaysAwayFromNow(true)
-            if (plant.fertilizerDate <= Date()) {
-                holder.fertilizerIconImageView.setColorFilter(Color.RED)
-            } else {
-                holder.fertilizerIconImageView.setColorFilter(Color.argb(1,25/255,255/255,50/255))
-            }
-        } else {
-            holder.fertilizerLayout.isVisible = false
-        }
+        holder.setupCellWithPlant(plant)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlantViewHolder {

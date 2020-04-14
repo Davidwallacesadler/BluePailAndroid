@@ -13,8 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
-import com.davidsadler.bluepail.activities.DarkModeConfig
-import com.davidsadler.bluepail.activities.MainActivity
 import com.davidsadler.bluepail.adapters.OnItemClickedListener
 import com.davidsadler.bluepail.adapters.PlantsAdapter
 import com.davidsadler.bluepail.model.Plant
@@ -36,25 +34,27 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     override fun onPlantUpdated(selectedPlant: Plant, status: PlantUpdateStatus) {
         when (status) {
             PlantUpdateStatus.Water -> {
-                this.context?.let {
+                context?.let { context ->
                     AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
                         selectedPlant.id,
                         true,
                         selectedPlant.wateringDate,
-                        it)
+                        context)
                     viewModel.update(selectedPlant)
                     Snackbar.make(view!!,R.string.snack_bar_watering_confirmation,Snackbar.LENGTH_SHORT).show()
                 }
             }
             PlantUpdateStatus.Fertilize -> {
-                this.context?.let {
+                context?.let { context ->
                     AlarmNotificationManager.scheduleNotificationAlarm(selectedPlant.name,
                         selectedPlant.id,
                         false,
                         selectedPlant.fertilizerDate!!,
-                        it)
+                        context)
                     viewModel.update(selectedPlant)
-                    Snackbar.make(view!!,R.string.snack_bar_fertilizing_confirmation,Snackbar.LENGTH_SHORT).show()
+                    view?.let {view ->
+                        Snackbar.make(view,R.string.snack_bar_fertilizing_confirmation,Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             }
             PlantUpdateStatus.Edit -> {
@@ -62,10 +62,10 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                 findNavController().navigate(action)
             }
             PlantUpdateStatus.Delete -> {
-                this.context?.let {
-                    cancelAlarmNotification(selectedPlant)
-                    viewModel.delete(selectedPlant)
-                    Snackbar.make(view!!,R.string.snack_bar_deletion_confirmation,Snackbar.LENGTH_LONG)
+                cancelAlarmNotification(selectedPlant)
+                viewModel.delete(selectedPlant)
+                view?.let {view ->
+                    Snackbar.make(view,R.string.snack_bar_deletion_confirmation,Snackbar.LENGTH_LONG)
                         .setAction(R.string.snack_bar_undo_action) {
                             viewModel.insert(selectedPlant)
                             scheduleAlarmNotification(selectedPlant)
@@ -76,8 +76,10 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     }
 
     override fun onItemClicked(selectedPlant: Plant) {
-        val listDetailDialog = PlantListDialog(selectedPlant, this)
-        listDetailDialog.show(this.activity!!.supportFragmentManager,"plant_list_detail_dialog")
+        activity?.let { activity ->
+            val listDetailDialog = PlantListDialog(selectedPlant, this)
+            listDetailDialog.show(activity.supportFragmentManager,"plant_list_detail_dialog")
+        }
     }
 
     override fun onCreateView(
@@ -90,11 +92,7 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val sharedPrefs = activity!!.getPreferences(Context.MODE_PRIVATE)
-        if (sharedPrefs.getBoolean(SHARED_PREF_DARK_MODE_BOOL, false)) {
-            println("DARK MODE BOOL WAS TRUE")
-            recyclerView_plant_list.setBackgroundColor(Color.BLACK)
-        }
+        setListBackgroundToBlackIfDarkMode()
         setupRecyclerViewLayout()
         observeAllPlants()
     }
@@ -102,16 +100,11 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     override fun onResume() {
         super.onResume()
         // TODO: Come up with a better way of refreshing plant list to show user plants need watered
-        if (args.colorToFilter != 1) {
-            when (args.colorToFilter) {
-                0 -> observeAllPlants()
-                else -> observeFilterPlants()
-            }
-        }
+        filterPlantsIfNeeded()
     }
 
     private fun setupRecyclerViewLayout() {
-        this.context?.let { context ->
+        context?.let { context ->
             recyclerView_plant_list.layoutManager = GridLayoutManager(context,2)
             val plantsListAdapter = PlantsAdapter(context,this)
             recyclerView_plant_list.adapter = plantsListAdapter
@@ -121,46 +114,46 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
     }
 
     private fun setupViewModel() {
-        this.activity?.let {
-            viewModel = ViewModelProvider(it).get(PlantListViewModel::class.java)
+        activity?.let { activity ->
+            viewModel = ViewModelProvider(activity).get(PlantListViewModel::class.java)
         }
     }
 
     private fun observeAllPlants() {
-        viewModel.allPlants.observe(viewLifecycleOwner, Observer {
-             adapter.setPlants(it)
+        viewModel.allPlants.observe(viewLifecycleOwner, Observer { allPlants ->
+             adapter.setPlants(allPlants)
         })
     }
 
     private fun observeFilterPlants() {
-        viewModel.filterByColor(args.colorToFilter).observe(this.activity!!, Observer {
-            adapter.setPlants(it)
+        viewModel.filterByColor(args.colorToFilter).observe(viewLifecycleOwner, Observer { filteredPlants ->
+            adapter.setPlants(filteredPlants)
         })
     }
 
     private fun cancelAlarmNotification(selectedPlant: Plant) {
-        this.context?.let {
+        context?.let { context ->
             AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,
                 selectedPlant.name,
                 true,
-                it)
+                context)
             if (selectedPlant.fertilizerDate != null) {
                 AlarmNotificationManager.cancelNotificationAlarm(selectedPlant.id,
                     selectedPlant.name,
                     false,
-                    it)
+                    context)
             }
         }
     }
 
     private fun scheduleAlarmNotification(selectedPlant: Plant) {
-        this.context?.let {
+        context?.let { context ->
             AlarmNotificationManager.scheduleNotificationAlarm(
                 selectedPlant.name,
                 selectedPlant.id,
                 true,
                 selectedPlant.wateringDate,
-                it
+                context
             )
             if (selectedPlant.fertilizerDate != null) {
                 AlarmNotificationManager.scheduleNotificationAlarm(
@@ -168,8 +161,26 @@ class PlantList : Fragment(), OnItemClickedListener, PlantUpdatedListener {
                     selectedPlant.id,
                     false,
                     selectedPlant.fertilizerDate,
-                    it
+                    context
                 )
+            }
+        }
+    }
+
+    private fun setListBackgroundToBlackIfDarkMode() {
+        activity?.let { activity ->
+            val sharedPrefs = activity.getPreferences(Context.MODE_PRIVATE)
+            if (sharedPrefs.getBoolean(SHARED_PREF_DARK_MODE_BOOL, false)) {
+                recyclerView_plant_list.setBackgroundColor(Color.BLACK)
+            }
+        }
+    }
+
+    private fun filterPlantsIfNeeded() {
+        if (args.colorToFilter != 1) {
+            when (args.colorToFilter) {
+                0 -> observeAllPlants()
+                else -> observeFilterPlants()
             }
         }
     }

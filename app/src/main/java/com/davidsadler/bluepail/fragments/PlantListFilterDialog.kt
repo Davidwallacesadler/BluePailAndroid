@@ -1,12 +1,9 @@
 package com.davidsadler.bluepail.fragments
 
-
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.adapters.ColorsAdapter
 import com.davidsadler.bluepail.adapters.OnColorSelectedListener
+import com.davidsadler.bluepail.util.fullUserScreenOrientation
+import com.davidsadler.bluepail.util.lockScreenOrientation
 import com.davidsadler.bluepail.viewModels.PlantListFilterViewModel
 import kotlinx.android.synthetic.main.fragment_plant_list_filter.*
 
@@ -47,12 +46,12 @@ class PlantListFilterDialog : DialogFragment(), OnColorSelectedListener {
 
     override fun onResume() {
         super.onResume()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        activity?.lockScreenOrientation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+        activity?.fullUserScreenOrientation()
     }
 
     private fun setupColorRecyclerView() {
@@ -60,8 +59,8 @@ class PlantListFilterDialog : DialogFragment(), OnColorSelectedListener {
             1,
             GridLayoutManager.HORIZONTAL,
             false)
-        context?.let {
-            colorsAdapter = ColorsAdapter(it,this)
+        context?.let { context ->
+            colorsAdapter = ColorsAdapter(context,this)
             recycer_view_color_filter.adapter = colorsAdapter
             colorsAdapter.selectedColor = 0
         }

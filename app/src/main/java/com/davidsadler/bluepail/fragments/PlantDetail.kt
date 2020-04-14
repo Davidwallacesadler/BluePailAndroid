@@ -1,15 +1,12 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
@@ -17,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.davidsadler.bluepail.R
@@ -95,12 +91,12 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
 
     override fun onResume() {
         super.onResume()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        activity?.lockScreenOrientation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+        activity?.fullUserScreenOrientation()
     }
 
     private fun inflateBottomToolbar() {
@@ -119,7 +115,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun setupColorRecyclerView() {
-        this.context?.let { context ->
+        context?.let { context ->
             recyclerView_plant_colors.layoutManager = GridLayoutManager(context,1,GridLayoutManager.HORIZONTAL,false)
             colorsAdapter = ColorsAdapter(context,this)
             recyclerView_plant_colors.adapter = colorsAdapter
@@ -127,14 +123,16 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun setupReminderClickListeners() {
-        this.view?.let {
-            imageButton_setup_watering.setOnClickListener {
-                val setupDialog = PlantReminderSetupDialog(this,false)
-                setupDialog.show(this.activity!!.supportFragmentManager,"reminder_dialog")
-            }
-            imageButton_setup_fertilizing.setOnClickListener{
-                val setupDialog = PlantReminderSetupDialog(this,true)
-                setupDialog.show(this.activity!!.supportFragmentManager,"reminder_dialog")
+        view?.let {
+            activity?.let { activity ->
+                imageButton_setup_watering.setOnClickListener {
+                    val setupDialog = PlantReminderSetupDialog(this,false)
+                    setupDialog.show(activity.supportFragmentManager,"reminder_dialog")
+                }
+                imageButton_setup_fertilizing.setOnClickListener{
+                    val setupDialog = PlantReminderSetupDialog(this,true)
+                    setupDialog.show(activity.supportFragmentManager,"reminder_dialog")
+                }
             }
         }
     }
@@ -171,10 +169,12 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
                     println("ERROR: Error occurred while creating file. ${ex.localizedMessage}")
                     null
                 }
-                photoFile?.also {
-                    val photoURI = FileProvider.getUriForFile(this.context!!, "com.example.android.fileprovider",it)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                photoFile?.also { file ->
+                    context?.let { context ->
+                        val photoURI = FileProvider.getUriForFile(context, "com.example.android.fileprovider",file)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
                 }
             }
         }
@@ -185,7 +185,10 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             updatePhotoImageButton()
         } else {
-            Toast.makeText(this.context!!,"Plant photo not saved",Toast.LENGTH_SHORT).show()
+            context?.let { context ->
+                Toast.makeText(context,"Plant photo not saved",Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
@@ -198,7 +201,6 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun savePlant() {
-        println("Save plant pressed")
         if (allRequiredParametersAreSet()) {
             viewModel.savePlant()
             scheduleAlarmNotifications()
@@ -276,7 +278,7 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
         if (args.plantId != 0) {
             if (viewModel.getId() == 0) {
                 viewModel.findById(args.plantId).observe(viewLifecycleOwner, androidx.lifecycle.Observer { plant ->
-                    this.activity!!.toolbar.setTitle(R.string.toolbar_title_edit_your_plant)
+                    this.activity?.toolbar?.setTitle(R.string.toolbar_title_edit_your_plant)
                     viewModel.setPlantName(plant.name)
                     viewModel.setPlantId(plant.id)
                     viewModel.setColorId(plant.colorId)
@@ -296,28 +298,19 @@ class PlantDetail : Fragment(), OnColorSelectedListener, OnReminderUpdatedListen
     }
 
     private fun scheduleAlarmNotifications() {
-        this.context?.let {
+        this.context?.let { context ->
             AlarmNotificationManager.scheduleNotificationAlarm(viewModel.getName(),
                 viewModel.getId()
                 ,true,
                 viewModel.getWateringDate()!!,
-                it)
+                context)
             if (viewModel.getFertilizingDate() != null) {
                 AlarmNotificationManager.scheduleNotificationAlarm(viewModel.getName(),
                     viewModel.getId(),
                     false,
                     viewModel.getFertilizingDate()!!,
-                    it)
+                    context)
             }
         }
     }
-}
-
-fun Fragment.hideKeyboard() {
-    view?.let { activity?.hideKeyboard(it) }
-}
-
-fun Context.hideKeyboard(view: View) {
-    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

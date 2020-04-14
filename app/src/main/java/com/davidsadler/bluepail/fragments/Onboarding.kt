@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.util.SHARED_PREF_ONBOARDING_BOOL
+import com.davidsadler.bluepail.util.fullUserScreenOrientation
+import com.davidsadler.bluepail.util.lockScreenOrientation
 import kotlinx.android.synthetic.main.fragment_onboarding.*
 
 class Onboarding: Fragment() {
@@ -22,10 +24,23 @@ class Onboarding: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupPrimaryButtonListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.lockScreenOrientation()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.fullUserScreenOrientation()
+    }
+
+    private fun setupPrimaryButtonListener() {
         button_get_started.setOnClickListener {
             updateSharedOnboardingBool()
-            val action = OnboardingDirections.actionOnboardingToPlantList()
-            findNavController().navigate(action)
+            navigateToPlantList()
         }
     }
 
@@ -36,4 +51,11 @@ class Onboarding: Fragment() {
             commit()
         }
     }
+
+    private fun navigateToPlantList() {
+        val action = OnboardingDirections.actionOnboardingToPlantList()
+        findNavController().navigate(action)
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Dialog
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,10 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
-import com.davidsadler.bluepail.util.getDateAmountOfDaysAway
-import com.davidsadler.bluepail.util.getDateAtDesiredTime
-import com.davidsadler.bluepail.util.getHour
-import com.davidsadler.bluepail.util.getMinute
+import com.davidsadler.bluepail.util.*
 import kotlinx.android.synthetic.main.fragment_plant_list_dialog.*
 import java.util.*
 
@@ -42,22 +38,22 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
         setupFertilizerClickListener()
         setupEditClickListener()
         setupDeleteClickListener()
-        if (savedInstanceState != null) {
-            val deleteStatus = savedInstanceState.getBoolean(deleteStatus)
-            deleteWasPressed = deleteStatus
-            updateDeleteButtonIfNeeded()
-        }
+        checkSavedInstanceState(savedInstanceState)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         retainInstance = true
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         return super.onCreateDialog(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.lockScreenOrientation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+        activity?.fullUserScreenOrientation()
     }
 
     private fun updateDeleteButtonIfNeeded() {
@@ -85,7 +81,7 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
                 selectedPlant.daysBetweenFertilizing,
                 selectedPlant.photo)
             plantUpdatedListener.onPlantUpdated(updatePlant, PlantUpdateStatus.Water)
-            this.dismiss()
+            dismiss()
         }
     }
 
@@ -106,8 +102,8 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
                     selectedPlant.photo)
                 plantUpdatedListener.onPlantUpdated(updatePlant, PlantUpdateStatus.Fertilize)
             } else {
-                this.context?.let {
-                    Toast.makeText(it,"No fertilizer reminders set for this plant", Toast.LENGTH_SHORT).show()
+                context?.let { context ->
+                    Toast.makeText(context,"No fertilizer reminders set for this plant", Toast.LENGTH_SHORT).show()
                 }
             }
             this.dismiss()
@@ -116,8 +112,6 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
 
     private fun setupEditClickListener() {
         button_edit_plant.setOnClickListener {
-            // navigate to plant detail and pass the plant id as a safeArg
-            println("$selectedPlant")
             plantUpdatedListener.onPlantUpdated(selectedPlant, PlantUpdateStatus.Edit)
             this.dismiss()
         }
@@ -127,13 +121,20 @@ class PlantListDialog(private val selectedPlant: Plant, private val plantUpdated
         button_delete_plant.setOnClickListener {
             if (deleteWasPressed) {
                 plantUpdatedListener.onPlantUpdated(selectedPlant, PlantUpdateStatus.Delete)
-                this.dismiss()
+                dismiss()
             } else {
-                //Toast.makeText(this.context!!, "Press delete again to confirm deletion",Toast.LENGTH_SHORT).show()
                 val deleteRed = Color.RED
                 button_delete_plant.setBackgroundColor(deleteRed)
                 deleteWasPressed = true
             }
+        }
+    }
+
+    private fun checkSavedInstanceState(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            val deleteStatus = savedInstanceState.getBoolean(deleteStatus)
+            deleteWasPressed = deleteStatus
+            updateDeleteButtonIfNeeded()
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
 import android.app.Dialog
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,13 +68,9 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
 
     override fun onResume() {
         super.onResume()
-        val params:ViewGroup.LayoutParams = dialog!!.window!!.attributes
-        params.width = LinearLayout.LayoutParams.MATCH_PARENT
-        params.height = LinearLayout.LayoutParams.WRAP_CONTENT
-        dialog!!.window!!.attributes = params as android.view.WindowManager.LayoutParams
+        setLayoutParams()
     }
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
         retainInstance = true
         return super.onCreateDialog(savedInstanceState)
     }
@@ -94,8 +89,8 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
 
     private fun changeColorsToFertilizerSchemeIfNeeded() {
         if (fertilizerSetup) {
-            this.context?.let {
-                val fertilizerGreenColor = ContextCompat.getColor(it,R.color.fertilizerGreen)
+            context?.let { context ->
+                val fertilizerGreenColor = ContextCompat.getColor(context,R.color.fertilizerGreen)
                 button_done.setBackgroundColor(fertilizerGreenColor)
                 textView_selected_date_header.setTextColor(fertilizerGreenColor)
                 textView_selected_date_header.text = getString(R.string.text_view_fertilizer_date_header)
@@ -144,7 +139,18 @@ class PlantReminderSetupDialog internal constructor(private val onReminderUpdate
     }
 
     private fun showToastWithText(text: String) {
-        Toast.makeText(this.activity,text, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setLayoutParams() {
+        dialog?.let { dialog ->
+            dialog.window?.let { window ->
+                val params: ViewGroup.LayoutParams = window.attributes
+                params.width = LinearLayout.LayoutParams.MATCH_PARENT
+                params.height = LinearLayout.LayoutParams.WRAP_CONTENT
+                dialog.window!!.attributes = params as android.view.WindowManager.LayoutParams
+            }
+        }
     }
 }
 

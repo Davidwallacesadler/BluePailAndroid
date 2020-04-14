@@ -1,7 +1,6 @@
 package com.davidsadler.bluepail.fragments
 
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,9 +15,7 @@ import com.davidsadler.bluepail.activities.MainActivity
 import com.davidsadler.bluepail.adapters.OnSettingsCellClickedListener
 import com.davidsadler.bluepail.adapters.OnSwitchToggledListener
 import com.davidsadler.bluepail.adapters.SettingsAdapter
-import com.davidsadler.bluepail.util.MarginItemDecorator
-import com.davidsadler.bluepail.util.RecyclerViewLayoutType
-import com.davidsadler.bluepail.util.SHARED_PREF_DARK_MODE_BOOL
+import com.davidsadler.bluepail.util.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_app_settings.*
 
@@ -55,7 +52,9 @@ class AppSettings : Fragment(), OnSwitchToggledListener, OnSettingsCellClickedLi
                     putBoolean(SHARED_PREF_DARK_MODE_BOOL, state)
                     commit()
                 }
-                Snackbar.make(this.view!!,snackbarMessage,Snackbar.LENGTH_SHORT).show()
+                view?.let {view ->
+                    Snackbar.make(view,snackbarMessage,Snackbar.LENGTH_SHORT).show()
+                }
                 findNavController().popBackStack()
                 findNavController().navigate(R.id.appSettings)
             }
@@ -75,23 +74,20 @@ class AppSettings : Fragment(), OnSwitchToggledListener, OnSettingsCellClickedLi
 
     override fun onResume() {
         super.onResume()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        activity?.lockScreenOrientation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+        activity?.fullUserScreenOrientation()
     }
 
     private fun setupRecyclerView() {
-        this.context?.let {
-            recyclerView_app_settings.layoutManager = LinearLayoutManager(it ,
-                RecyclerView.VERTICAL,
-                false)
-            adapter = SettingsAdapter(it,this,this)
+        this.context?.let {context ->
+            recyclerView_app_settings.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            adapter = SettingsAdapter(context,this,this)
             recyclerView_app_settings.adapter = adapter
-            adapter.isDarkModeEnabled = activity!!.getPreferences(Context.MODE_PRIVATE).getBoolean(
-                SHARED_PREF_DARK_MODE_BOOL, false)
+            adapter.isDarkModeEnabled = activity!!.getPreferences(Context.MODE_PRIVATE).getBoolean(SHARED_PREF_DARK_MODE_BOOL, false)
             recyclerView_app_settings.addItemDecoration(MarginItemDecorator(32, RecyclerViewLayoutType.VERTICAL_LIST))
         }
     }
