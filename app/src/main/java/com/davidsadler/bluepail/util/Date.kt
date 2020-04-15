@@ -19,7 +19,7 @@ fun Date.getDaysAwayFromNow(includesTime: Boolean): String {
             else -> "$weekCount Weeks"
         }
         if (daysIntoCurrentWeek > 0) {
-            returnString = returnString.plus(when (daysBetweenDate) {1 -> ", 1 Day" else -> ", $daysIntoCurrentWeek Days" })
+            returnString = returnString.plus(when (daysIntoCurrentWeek) {1 -> ", 1 Day" else -> ", $daysIntoCurrentWeek Days" })
         }
     } else {
         returnString = if (daysBetweenDate >= 0) {
@@ -61,7 +61,7 @@ fun Date.getDaysAwayFromAnotherDate(otherDate: Date, includesTime: Boolean): Str
             else -> "$weekCount Weeks"
         }
         if (daysIntoCurrentWeek > 0) {
-            returnString = returnString.plus(when (daysBetweenDate) {1 -> ", 1 Day" else -> ", $daysIntoCurrentWeek Days" })
+            returnString = returnString.plus(when (daysIntoCurrentWeek) {1 -> ", 1 Day" else -> ", $daysIntoCurrentWeek Days" })
         }
     } else {
         returnString = if (daysBetweenDate >= 0) {

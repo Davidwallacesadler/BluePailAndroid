@@ -13,10 +13,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.davidsadler.bluepail.R
 import com.davidsadler.bluepail.model.Plant
-import com.davidsadler.bluepail.util.dryRed
-import com.davidsadler.bluepail.util.fertilizerGreen
-import com.davidsadler.bluepail.util.getDaysAwayFromNow
-import com.davidsadler.bluepail.util.wateredBlue
+import com.davidsadler.bluepail.util.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_plant_list_cell.view.*
 import java.util.*
@@ -62,17 +59,17 @@ class PlantsAdapter internal constructor(context: Context, private val itemClick
             }
             nextWateringLabel.text = plant.wateringDate.getDaysAwayFromNow(true)
             if (plant.wateringDate <= Date()) {
-                waterIconImageView.setColorFilter(Color().dryRed())
+                waterIconImageView.setColorFilter(Color.RED)
             } else {
-                waterIconImageView.setColorFilter(Color().wateredBlue())
+                waterIconImageView.clearColorFilter()
             }
             if (plant.fertilizerDate != null) {
                 fertilizerLayout.isVisible = true
                 nextFertilizingLabel.text = plant.fertilizerDate.getDaysAwayFromNow(true)
                 if (plant.fertilizerDate <= Date()) {
-                    fertilizerIconImageView.setColorFilter(Color().dryRed())
+                    fertilizerIconImageView.setColorFilter(Color.RED)
                 } else {
-                    fertilizerIconImageView.setColorFilter(Color().fertilizerGreen())
+                    fertilizerIconImageView.clearColorFilter()
                 }
             } else {
                 fertilizerLayout.isVisible = false

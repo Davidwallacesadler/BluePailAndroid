@@ -83,6 +83,10 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+
     <com.squareup.timessquare.CalendarPickerView
         android:id="@+id/calendarView_reminder_setup"
         android:layout_width="match_parent"
