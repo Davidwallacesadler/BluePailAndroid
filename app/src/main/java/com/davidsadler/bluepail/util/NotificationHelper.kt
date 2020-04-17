@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -46,12 +47,20 @@ object NotificationHelper {
         } else {
             PendingIntent.getActivity(context, plantId + 1000, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
-        val builder = NotificationCompat.Builder(context!!, NOTIFICATION_CHANNEL_ID)
+        val iconColor = if (Build.VERSION.SDK_INT >= 23) {
+            context.getColor(R.color.colorPrimary)
+        } else {
+            Color.BLUE
+        }
+        val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.notification_icon)
+            .setColorized(true)
+            .setColor(iconColor)
             .setContentTitle(notificationTitle)
             .setContentText(notificationContent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setGroup(NOTIFICATION_GROUP_REMINDERS)
             .setVibrate(longArrayOf(1000,1000))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

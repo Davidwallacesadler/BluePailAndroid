@@ -1,7 +1,11 @@
 package com.davidsadler.bluepail.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
 import java.io.ByteArrayOutputStream
 
 fun Bitmap.resize(width: Int, height: Int) : Bitmap {
@@ -20,3 +24,4 @@ fun Bitmap.compress(quality: Int) : Bitmap {
     val byteArray = stream.toByteArray()
     return BitmapFactory.decodeByteArray(byteArray,0,byteArray.size)
 }
+

@@ -15,10 +15,11 @@ import kotlinx.android.synthetic.main.item_switch_cell.view.*
 class SettingsAdapter(val context: Context, private val switchListener: OnSwitchToggledListener, private val cellTappedListener: OnSettingsCellClickedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
-    private val settingTitles = listOf("Dark Mode", "Rate and Review", "Share")
-    private val settingIcons = listOf(R.drawable.image_view_dark_mode_icon,
-        R.drawable.image_view_rate_review_icon,
-        R.drawable.image_view_share_icon)
+    private val settingTitles = listOf("Dark Mode")
+//    , "Rate and Review", "Share"
+    private val settingIcons = listOf(R.drawable.image_view_dark_mode_icon)
+    //        R.drawable.image_view_rate_review_icon,
+    //        R.drawable.image_view_share_icon
     var isDarkModeEnabled = false
 
     override fun getItemViewType(position: Int): Int {

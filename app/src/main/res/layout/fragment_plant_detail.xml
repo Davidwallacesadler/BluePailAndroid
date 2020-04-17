@@ -184,9 +184,6 @@
 
                                 <TimePicker
                                     android:id="@+id/timePicker_watering_time"
-                                    android:numbersTextColor="@color/colorSecondaryText"
-                                    android:amPmTextColor="@color/colorSecondaryText"
-                                    android:numbersSelectorColor="@color/colorSecondaryText"
                                     android:layout_width="378dp"
                                     android:layout_height="wrap_content"
                                     android:focusable="true"
@@ -289,8 +286,6 @@
                                 <TimePicker
                                     android:id="@+id/timePicker_setup_fertilizing"
                                     android:layout_width="381dp"
-                                    android:numbersTextColor="@color/colorSecondaryText"
-                                    android:amPmTextColor="@color/colorSecondaryText"
                                     android:layout_height="wrap_content"
                                     android:focusable="true"
                                     android:timePickerMode="spinner"
